@@ -1,13 +1,17 @@
-import { UserList } from "./components/UserList";
+import { Tasks } from "./components/Tasks";
 
 export default function Home() {
   return (
-    <div>
-      <h1>
-        Express JS + Next JS Template
+    <div className="mx-auto mt-10 text-center">
+      <h1 className="text-2xl font-bold">
+        ToDoNext
       </h1>
       <br />
-      <UserList/>
+      <div>
+        <div className="font-light text-xl">
+          <Tasks/>
+        </div>
+      </div>
     </div>
   );
 }

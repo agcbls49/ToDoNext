@@ -1,50 +1,35 @@
-# NextJS + ExpressJS Template
-This template is for using NextJS in the frontend and ExpressJS in the backend. 
+# ToDoNext
+A To Do Application that uses the following technologies:
 
-**NOTE: NextJS code is in TypeScript (default configs) and ExpressJS is in JavaScript.**
+**Frontend:**
+1. Tailwind CSS
+2. React JS
+3. Next.js
 
-## Cloning to be used
-Install GitHub Desktop and create a folder to put this cloned project. In GitHub make sure that `Folder/` is selected as a directory and copy the url of this project. Once cloned, the folder will now have the following inside:
-```
-frontend
-backend
-README.md
-```
+**Backend:**
+1. Express JS
+2. MySQL Database
 
-Install dependencies:
+## Setup
+For those cloning the project.
+
 ```
 cd frontend/
 npm install
 cd ..
-cd backend/
-npm i express
-npm i nodemon -D
-npm install cors
-npm fund
 ```
 
-## Initial Setup
+Choose `Yes, use recommended defaults` using the `Enter` key. The default configurations include TailwindCSS, ReactJS and TypeScript.
+
 ```
 cd backend/
 npm init -y
 touch api.js
-npm i express
+npm install express mysql2 dotenv cors
 npm i nodemon -D
 ```
 
-Inside `backend/package.json` rename `"main": "index.js"` to `"main": "api.js"` and inside `"scripts":{` add 
-```
-"start": "node server",
-"dev": "nodemon server" 
-```
-
-```
-cd ..
-cd frontend/
-npx create-next-app@latest .
-```
-
-Choose `Yes, use recommended defaults` using the `Enter` key. The default configurations include TailwindCSS, ReactJS and TypeScript.
+MySQL Setup is included in the dump file in `backend/mysql_queries.sql`.
 
 ## Setup CORS (Cross-Origin Resource Sharing)
 Since frontend runs on port 3000 and backend runs on port 4000.
@@ -54,9 +39,6 @@ cd ..
 cd backend/
 npm install cors
 ```
-
-In `frontend/package.json`, below `"name": "client",` add 
-`"proxy": "http://localhost:4000",`.
 
 Inside `frontend/next.config.ts` below `/* config options here */` add 
 ```
@@ -77,7 +59,7 @@ frontend/app/page.tsx
 frontend/app/components/UserList.tsx
 ```
 
-## Run the Template
+## Run the Project
 Open two terminals. Do this for the frontend:
 ```
 cd frontend/
