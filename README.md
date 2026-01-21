@@ -54,9 +54,9 @@ Inside `frontend/next.config.ts` below `/* config options here */` add
 
 For code, go to the following files and copy paste in desired project:
 ```
-backend/api.js
+backend/todos.js
 frontend/app/page.tsx
-frontend/app/components/UserList.tsx
+frontend/app/components/Tasks.tsx
 ```
 
 ## Run the Project
