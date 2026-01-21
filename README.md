@@ -11,7 +11,7 @@ A To Do Application that uses the following technologies:
 2. MySQL Database
 
 ## Setup
-For those cloning the project.
+For those cloning the project or want to recreate the setup.
 
 ```
 cd frontend/
@@ -29,16 +29,16 @@ npm install express mysql2 dotenv cors
 npm i nodemon -D
 ```
 
-MySQL Setup is included in the dump file in `backend/mysql_queries.sql`.
+**NOTE: THIS IS IMPORTANT SINCE THE FRONTEND WILL SAY "map is not a function" IF NOT DONE CORRECTLY.**
+
+MySQL Setup is included in the dump file in `backend/mysql_queries.sql`. Make sure MySQL is running by doing the following:
+1. Press Windows Key + R key on the keyboard
+2. Scroll until MySQL80, right click on it, and click start
+3. Open MySQL Workbench and the database
+4. Input the password needed for the database and the status will now say running
 
 ## Setup CORS (Cross-Origin Resource Sharing)
 Since frontend runs on port 3000 and backend runs on port 4000.
-
-```
-cd ..
-cd backend/
-npm install cors
-```
 
 Inside `frontend/next.config.ts` below `/* config options here */` add 
 ```
@@ -46,7 +46,7 @@ Inside `frontend/next.config.ts` below `/* config options here */` add
     return [
       {
         source: '/api',
-        destination: 'http://localhost:4000/api',
+        destination: 'http://localhost:4000/todos',
       },
     ];
   },
@@ -74,4 +74,4 @@ npm run dev
 
 **NOTE: Make sure both the two localhost are opened by doing the commands above.**
 
-Check API json object by pasting this in the browser tab: `http://localhost:4000/api`
+Check API json object by pasting this in the browser tab: `http://localhost:4000/todos`

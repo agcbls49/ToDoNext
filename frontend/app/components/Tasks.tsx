@@ -9,7 +9,7 @@ export async function Tasks() {
     return (
         <ul>
             {data.map((row:any) => (
-                <li key={row.id}>
+                <li key={row.id} style={{ textDecoration: row.completed ? 'line-through' : 'none' }}>
                     <strong>{row.task}</strong> 
                 </li>
             ))}

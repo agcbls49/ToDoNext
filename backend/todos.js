@@ -57,9 +57,35 @@ app.get("/todos/:id", async (req, res) => {
     }
 });
 
-// POST NEW todo
+// POST CREATE new todo
+app.post("/todos/", async(req, res) => {
+    const { task, tags, completed } = req.body;
 
+    if(!task) return res.status(400).json({message: "Task is required"});
 
+    try {
+        // 0 for false and 1 for true
+        const isCompleted = completed ? 1 : 0;
+        const [result] = await db.query(`INSERT INTO todos (task, tags, completed) VALUES (?, ?, ?)`, [task, tags || "", isCompleted]);
+        
+        // return the ID of the newly created item
+        res.status(201).json({ 
+            // auto incremented id
+            id: result.insertId, 
+            task, 
+            tags, 
+            completed: !!isCompleted
+        });
+    }
+    catch (e) {
+        console.error(e);
+        res.status(500).json({ error: "Database error" });
+    }
+});
+
+// UPDATE a todo
+
+// DELETE a todo
 
 // Run this development server in port 
 app.listen(process.env.PORT || 4000, () => {
