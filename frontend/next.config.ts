@@ -5,8 +5,9 @@ const nextConfig: NextConfig = {
     async rewrites() {
     return [
       {
-        source: '/todos',
-        destination: 'http://localhost:4000/todos',
+        // path* to use all routes in express backend
+        source: '/todos/:path*',
+        destination: 'http://localhost:4000/todos/:path*',
       },
     ];
   },

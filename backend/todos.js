@@ -1,6 +1,7 @@
 // Database Setup
 require('dotenv').config();
 const mysql = require('mysql2/promise');
+const PORT = process.env.PORT || 4000;
 
 const db = mysql.createPool({
     host: process.env.DB_HOST,
@@ -140,6 +141,6 @@ app.delete("/todos/:id", async(req, res) => {
 });
 
 // Run this development server in port 
-app.listen(process.env.PORT || 4000, () => {
-    console.log("Server started on port 4000");
+app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}/todos`);
 });

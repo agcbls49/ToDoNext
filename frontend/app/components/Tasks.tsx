@@ -1,16 +1,44 @@
-export async function Tasks() {
-    // API Component
-    const response = await fetch("http://localhost:4000/todos", {
-        cache: "no-store", 
-    });
-    
-    const data = await response.json();
+"use client";
+import { useState, useEffect } from "react";
+import { Delete } from "./Delete";
+
+type Todo = {
+    id: number;
+    task: string;
+    completed: boolean;
+};
+
+export function Tasks() {
+    const [todos, setTodos] = useState<Todo[]>([]);
+
+    // show all the todos
+    const fetchTodos = async() => {
+        try {
+            const response = await fetch("/todos");
+            const data = await response.json();
+            setTodos(data);
+        }
+        catch(e) {
+            console.error("Error fetching todos: ", e);
+        }
+    };
+
+    useEffect(() => {
+        Promise.resolve().then(fetchTodos);
+    }, []);
 
     return (
         <ul>
-            {data.map((row:any) => (
-                <li key={row.id} style={{ textDecoration: row.completed ? 'line-through' : 'none' }}>
-                    <strong>{row.task}</strong> 
+            {todos.map((todo: Todo) => (
+                <li key={todo.id} style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}>
+                    <strong>{todo.task}</strong> 
+                    <br />
+                    {/* EDIT THIS LATER */}
+                    <Delete 
+                        // this will delete the todo by using the id of the todo
+                        todoId={todo.id} 
+                        onDeleteSuccess={fetchTodos} 
+                    />
                 </li>
             ))}
         </ul>
