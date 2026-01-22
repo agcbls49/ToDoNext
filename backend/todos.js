@@ -31,6 +31,7 @@ app.use(express.json());
 app.get("/todos", async(req, res) => {
     try {
         // array of todo objects
+        // rows is used for SELECT
         const [rows] = await db.query("SELECT * FROM todos");
         res.json(rows);
     }
@@ -42,12 +43,11 @@ app.get("/todos", async(req, res) => {
 });
 
 // GET SINGLE todo (go to localhost:4000/todos/1)
-app.get("/todos/:id", async (req, res) => {
+app.get("/todos/:id", async(req, res) => {
     const todoId = parseInt(req.params.id);
 
     try {
         const [rows] = await db.query(`SELECT * FROM todos WHERE id = ?`, [todoId]);
-        // rows is an array of results
         if (rows.length === 0) return res.status(404).json({ message: "Todo not found" });
         res.json(rows[0]);
     } 
@@ -61,16 +61,19 @@ app.get("/todos/:id", async (req, res) => {
 app.post("/todos/", async(req, res) => {
     const { task, tags, completed } = req.body;
 
-    if(!task) return res.status(400).json({message: "Task is required"});
+    // check if its an empty task
+    if(!task) return res.status(400).json({ message: "Task is required" });
 
     try {
         // 0 for false and 1 for true
         const isCompleted = completed ? 1 : 0;
+        // result is used for INSERT, UPDATE and DELETE
         const [result] = await db.query(`INSERT INTO todos (task, tags, completed) VALUES (?, ?, ?)`, [task, tags || "", isCompleted]);
         
         // return the ID of the newly created item
         res.status(201).json({ 
             // auto incremented id
+            // get the id of the new row the database just created
             id: result.insertId, 
             task, 
             tags, 
@@ -84,8 +87,57 @@ app.post("/todos/", async(req, res) => {
 });
 
 // UPDATE a todo
+app.put("/todos/:id", async(req, res) => {
+    const todoId = parseInt(req.params.id);
+    const { task, tags, completed } = req.body;
+
+    // check if its an empty task
+    if(!task) return res.status(400).json({ message: "Task is required" });
+
+    try {
+        const isCompleted = completed ? 1 : 0;
+        const [result] = await db.query(`UPDATE todos SET task=?, tags=?, completed=? WHERE id=?`, [task, tags || "", isCompleted, todoId]);
+
+        // affectedRows checks if any row was changed
+        // check if the id to update actually exists
+        if(result.affectedRows === 0) {
+            return res.status(404).json({ message: "Task not found!" });
+        }
+
+        // returns the edited task
+        res.status(200).json({ 
+            id: todoId, 
+            task, 
+            tags, 
+            completed
+        });
+    }
+    catch (e) {
+        console.error(e);
+        res.status(500).json({ error: "Database error" });
+    }
+});
 
 // DELETE a todo
+app.delete("/todos/:id", async(req, res) => {
+    const todoId = parseInt(req.params.id);
+
+    try {
+        const [result] = await db.query(`DELETE FROM todos WHERE id=?`, [todoId]);
+
+        // prevent user from deleting a non-existent id task
+        // confirm if something was actually deleted
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: "Todo not found!" });
+        }
+
+        res.status(200).json({ message: "Todo deleted successfully!" });
+    }
+    catch (e) {
+        console.error(e);
+        res.status(500).json({ error: "Database error" });
+    }
+});
 
 // Run this development server in port 
 app.listen(process.env.PORT || 4000, () => {
