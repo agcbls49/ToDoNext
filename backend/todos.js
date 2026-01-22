@@ -27,7 +27,6 @@ app.use(cors({
 // Middleware
 app.use(express.json());
 
-
 // GET ALL todos (go to localhost:4000/)
 app.get("/todos", async(req, res) => {
     try {
