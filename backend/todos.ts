@@ -1,6 +1,6 @@
 // Database Setup
 import dotenv from 'dotenv';
-import mysql, { Pool, PoolConnection, ResultSetHeader, RowDataPacket } from 'mysql2/promise';
+import mysql, { Pool, ResultSetHeader, RowDataPacket } from 'mysql2/promise';
 import express, { Application, Request, Response } from 'express';
 import cors from 'cors';
 

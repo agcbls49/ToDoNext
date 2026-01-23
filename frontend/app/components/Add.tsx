@@ -34,11 +34,11 @@ export default function Add() {
     return(
         <form className="flex" onSubmit={handleSubmit}>
             <input value={input} onChange={(e) => setInput(e.target.value)}
-                placeholder="What needs to be done?"
-                className="rounded-s-md grow border border-gray-400 p-2"
+                placeholder="Make a task"
+                className="dark:text-white dark:border-white placholder-gray-500 rounded-s-md grow border border-black p-2"
             />
             <button type="submit" 
-                className="bg-blue-500 px-2 py-1 hover:bg-blue-700 rounded-sm">
+                className="font-bold text-white bg-green-600 px-1 py-1 hover:bg-green-700 rounded-e-sm transition-all duration-300 ease-in-out cursor-pointer">
                     Add Task
             </button>
         </form>

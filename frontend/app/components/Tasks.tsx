@@ -27,19 +27,13 @@ export function Tasks() {
         <div>
             <ul>
                 {todos.map((todo: Todo) => (
-                    <li key={todo.id} style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}>
+                    <li key={todo.id} className={`flex justify-between items-center text-lg py-2 ${todo.completed ? 'line-through' : ''}`}>
                         <strong>{todo.task}</strong>
-
-                        <div className="space-x-2">
-                            
-                            {/* EDIT THIS LATER */}
                             <Delete 
                                 // this will delete the todo by using the id of the todo
                                 todoId={todo.id} 
                                 onDeleteSuccess={fetchTodos} 
                             />
-                        </div>
-                        
                     </li>
                 ))}
             </ul>

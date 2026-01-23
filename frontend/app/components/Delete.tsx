@@ -25,7 +25,7 @@ export function Delete({ todoId, onDeleteSuccess }: DeleteProps) {
     };
 
     return(
-        <button className="bg-red-500 px-2 py-1 hover:bg-red-700 rounded-sm"
+        <button className="text-white text-lg bg-red-500 px-2 py-1 hover:bg-red-700 rounded-sm transition-all duration-300 ease-in-out cursor-pointer"
             onClick={handleDelete}>
             Delete
         </button>
