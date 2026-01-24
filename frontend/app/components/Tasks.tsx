@@ -28,7 +28,8 @@ export function Tasks() {
     // clicking task to show complete or not and showing it on the database
     const handleToggleComplete = async(id: number, currentStatus: boolean) => {
         try {
-            const todoToUpdate = todos.find(todo => todo.id === todo.id);
+            const todoToUpdate = todos.find(todo => todo.id === id);
+            console.log("Found todo:", todoToUpdate?.task);
 
             if(!todoToUpdate) return;
 
@@ -43,10 +44,11 @@ export function Tasks() {
             });
 
             if(response.ok) {
-                // update the status visually
+                const updatedTodo = await response.json();
+
+                // get the updated data to prevent duplicates
                 setTodos(todos.map(todo => todo.id === id ? 
-                    {...todo, completed: !currentStatus}
-                    : todo));
+                    {...todo, completed: updatedTodo.completed} : todo));
             }
         }
         catch(e) {
@@ -58,7 +60,11 @@ export function Tasks() {
             <ul>
                 {todos.map((todo: Todo) => (
                     // task entry
-                    <li key={todo.id} onClick={() => handleToggleComplete(todo.id, todo.completed)}
+                    <li key={todo.id} onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        handleToggleComplete(todo.id, todo.completed)
+                        }}
                         className={`flex justify-between items-center text-lg py-3 px-4 mb-3 bg-white dark:bg-[#0a0a0a] rounded-lg shadow-lg hover:shadow-2xl transition-all duration-300 ease-in-out cursor-pointer dark:hover:shadow-[0_0_15px_rgba(255,240,0,0.3)]`}>
                         <div className="flex items-center space-x-4">
                         {/* Only the task text gets line-through and opacity */}
