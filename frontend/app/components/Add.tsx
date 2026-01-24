@@ -3,7 +3,19 @@
 import { useState } from "react";
 
 export default function Add() {
-    const [input, setInput] = useState<string>("");
+    const [taskInput, setTaskInput] = useState<string>("");
+    const [tagsInput, setTagsInput] = useState<string>("");
+    const [tagsArray, setTags] = useState<string[]>([]);
+
+    // update tagsArray whenever tagsInput changes
+    const handleTagsInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const inputValue = e.target.value;
+        setTagsInput(inputValue);
+
+        // convert comma separated string to array
+        const tags = inputValue.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0);
+        setTags(tags);
+    }
 
     // for the form submission when the button is clicked it adds the new todo
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -11,17 +23,22 @@ export default function Add() {
         // it sends a POST request and re renders/refreshes the page
         e.preventDefault();
 
-        if (!input.trim()) return;
+        if (!taskInput.trim()) return;
 
         try {
+            // convert tags array to comma separated string for the backend
+            const tagsString = tagsArray.join(', ');
+
             const response = await fetch("/todos", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ task:input, tags:"", completed: false })
+                body: JSON.stringify({ task:taskInput, tags:tagsString, completed: false })
             });
 
             if(response.ok) {
-                setInput("");
+                setTaskInput("");
+                setTagsInput("");
+                setTags([]);
                 // refresh window to show the new todo
                 window.location.reload();
             }
@@ -32,14 +49,22 @@ export default function Add() {
     }
 
     return(
-        <form className="flex" onSubmit={handleSubmit}>
-            <input value={input} onChange={(e) => setInput(e.target.value)}
-                placeholder="Make a task"
-                className="dark:text-white dark:border-white placholder-gray-500 rounded-s-md grow border border-black p-2"
+        <form className="space-y-4" onSubmit={handleSubmit}>
+            {/* Task name input */}
+            <input value={taskInput} 
+            onChange={(e) => setTaskInput(e.target.value)}
+            placeholder="Make a Task"
+            className="dark:text-white dark:border-white placeholder-gray-500 rounded-md grow border border-black p-2 w-full"/>
+            {/* Tags input */}
+            <input value={tagsInput} 
+            onChange={handleTagsInputChange}
+            placeholder="Add tags (comma separated)"
+            className="dark:text-white dark:border-white placeholder-gray-500 rounded-md grow border border-black p-2 w-full"
             />
-            <button type="submit" 
-                className="font-bold text-white bg-green-600 px-1 py-1 hover:bg-green-700 rounded-e-sm transition-all duration-300 ease-in-out cursor-pointer">
-                    Add Task
+            {/* Add task button */}
+            <button type="submit"
+            className="font-bold bg-amber-400 text-black px-4 py-2 hover:bg-amber-500 rounded-md transition-all duration-300 ease-in-out cursor-pointer w-full">
+                Add Task
             </button>
         </form>
     );
