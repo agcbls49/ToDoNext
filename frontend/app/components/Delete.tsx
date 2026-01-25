@@ -7,7 +7,13 @@ type DeleteProps = {
 };
 
 export function Delete({ todoId, onDeleteSuccess }: DeleteProps) {
-    const handleDelete = async () => {
+    const handleDelete = async (e:React.MouseEvent) => {
+        /* 
+            this fixes the bug where the delete button & cancel alert button being 
+            clicked causes the task to be completed instead of retaining status 
+        */
+        e.stopPropagation();
+
         if (!confirm("Are you sure you want to delete?")) return;
 
         try {
