@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Todo } from "../types/todo";
+import { Pencil } from 'lucide-react';
 
 type EditProps = {
     todo: Todo; 
@@ -50,8 +51,8 @@ export default function Edit({ todo, onEditComplete }: EditProps) {
                 }}
                 // prevent modal from closing when mouse is held and dragged
                 onMouseDown={(e) => e.stopPropagation()}
-                className="bg-amber-400 text-white px-3 py-1 hover:bg-amber-600 rounded-md transition-all duration-300 ease-in-out cursor-pointer text-lg">
-                Edit
+                className="bg-gray-500 text-white px-3 py-1 hover:bg-gray-600 rounded-md transition-all duration-300 ease-in-out cursor-pointer text-lg">
+                <Pencil />
             </button>
 
             {/* modal overlay for editing task */}
@@ -91,7 +92,7 @@ export default function Edit({ todo, onEditComplete }: EditProps) {
 
                         {/* Tags input */}
                         <div>
-                            <label className="block tetx-black text-md font-medium mb-1 dark:text-gray-300">
+                            <label className="block text-black text-md font-medium mb-1 dark:text-gray-300">
                                 Tags
                             </label>
                             <input value={tags}

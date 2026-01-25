@@ -6,13 +6,27 @@ import Edit from "./Edit";
 // Import the type interface for the todos
 import { Todo } from "../types/todo";
 
+// Icons
+import { ArrowUpAZ } from 'lucide-react';
+import { ArrowUpZA } from 'lucide-react';
+import { SunMoon } from 'lucide-react';
+
 export function Tasks() {
     const [todos, setTodos] = useState<Todo[]>([]);
 
     // show all the todos
-    const fetchTodos = async() => {
+    const fetchTodos = async(order: string) => {
         try {
-            const response = await fetch("/todos");
+            let endpoint = "/todos";
+        
+            if(order === "asc") { 
+                endpoint = "/todos/sort/asc"; 
+            }
+            if(order === "desc") {
+                endpoint = "/todos/sort/desc"; 
+            }
+
+            const response = await fetch(endpoint);
             const data = await response.json();
             setTodos(data);
         }
@@ -22,7 +36,11 @@ export function Tasks() {
     };
 
     useEffect(() => {
-        Promise.resolve().then(fetchTodos);
+        // calling fetch todos alone wouldnt make this work
+        const loadTodos = async () => {
+            await fetchTodos("");
+        };
+        loadTodos();
     }, []);
 
     // clicking task to show complete or not and showing it on the database
@@ -57,7 +75,22 @@ export function Tasks() {
     }
     return (
         <div>
-            <ul>
+            {/* Sorting buttons */}
+            <div className="flex space-x-5">
+                <button onClick={() => fetchTodos("asc")}
+                    className="flex items-center text-lg bg-gray-500 text-white px-8 py-2 hover:bg-gray-600 rounded-md transition-all duration-300 ease-in-out cursor-pointer">
+                    Sort Ascending <ArrowUpAZ className="ml-2" />
+                </button>
+                <button onClick={() => fetchTodos("desc")}
+                    className="flex items-center text-lg bg-gray-500 text-white px-6 py-2 hover:bg-gray-600 rounded-md transition-all duration-300 ease-in-out cursor-pointer">
+                    Sort Descending <ArrowUpZA className="ml-2" />
+                </button>
+                <button 
+                    className="flex items-center text-lg bg-gray-500 text-white px-6 py-2 hover:bg-gray-600 rounded-md transition-all duration-300 ease-in-out cursor-pointer">
+                    <SunMoon />
+                </button>
+            </div>
+            <ul className="mt-5">
                 {todos.map((todo: Todo) => (
                     // task entry
                     <li key={todo.id} onClick={(e) => {
@@ -91,14 +124,14 @@ export function Tasks() {
                                 todo={todo} // Pass entire todo object
                                 onEditComplete={() => {
                                     // Handle edit completion
-                                    fetchTodos(); // Refresh the list
+                                    fetchTodos(""); // Refresh the list
                                 }}
                                 />
                             }
                             <Delete 
                                 // this will delete the todo by using the id of the todo
                                 todoId={todo.id} 
-                                onDeleteSuccess={fetchTodos} 
+                                onDeleteSuccess={() => fetchTodos("")} 
                             />
                         </div>
                     </li>

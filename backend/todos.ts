@@ -140,6 +140,50 @@ app.get("/todos/:id", async (req: Request<{ id: string }>, res: Response): Promi
     }
 });
 
+// Sort the todo alphabetically
+app.get("/todos/sort/asc", async (req: Request, res: Response): Promise<void> => {
+    try {
+        const [rows] = await db.query<(RowDataPacket & Todo)[]>("SELECT * FROM todos ORDER BY task ASC");
+        
+        const todos: TodoResponse[] = rows.map((row: RowDataPacket & Todo) => ({
+            id: row.id,
+            task: row.task,
+            tags: row.tags,
+            completed: Boolean(row.completed)
+        }));
+
+        res.json(todos);
+    } 
+    catch (e: any) 
+    {
+        console.error(e);
+        // Internal Server Error
+        res.status(500).json({ error: "Database Error" });
+    }
+});
+
+// Reset the sorting
+app.get("/todos/sort/desc", async (req: Request, res: Response): Promise<void> => {
+    try {
+        const [rows] = await db.query<(RowDataPacket & Todo)[]>("SELECT * FROM todos ORDER BY task DESC");
+        
+        const todos: TodoResponse[] = rows.map((row: RowDataPacket & Todo) => ({
+            id: row.id,
+            task: row.task,
+            tags: row.tags,
+            completed: Boolean(row.completed)
+        }));
+
+        res.json(todos);
+    } 
+    catch (e: any) 
+    {
+        console.error(e);
+        // Internal Server Error
+        res.status(500).json({ error: "Database Error" });
+    }
+});
+
 // POST CREATE new todo
 app.post("/todos/", async (req: Request, res: Response): Promise<void> => {
     // ? is used to check if undefined or missing
