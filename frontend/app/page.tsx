@@ -3,6 +3,8 @@
 import { Tasks } from "./components/Tasks";
 import { useState } from "react";
 
+import { ArrowUp } from 'lucide-react';
+
 export default function Home() {
   const [isDarkMode, setDarkMode] = useState<boolean>(false);
 
@@ -16,6 +18,13 @@ export default function Home() {
         {/* center and give max width which prevents it from going to the edge of the screen */}
         <div className={`w-[50%] mx-auto rounded-md p-5 space-y-6 shadow-lg ${isDarkMode ?  'bg-[#171717] text-white' : 'bg-gray-50 text-black'}`}>
           <Tasks isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode}/>
+          {/* Back to top button */}
+          <div className="flex justify-end">
+            <button onClick={(e) => e.currentTarget.closest('main')?.scrollTo({ top: 0, behavior: 'smooth' })}
+              className="font-bold bg-amber-400 text-white px-4 py-2 hover:bg-amber-500 rounded-md transition-all duration-300 ease-in-out cursor-pointer flex items-center">
+                Back to Top <ArrowUp />
+            </button>
+          </div>
         </div>
     </main>
   );
