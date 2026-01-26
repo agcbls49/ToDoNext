@@ -85,6 +85,43 @@ export function Tasks({ isDarkMode, toggleDarkMode }: DarkModeProps) {
             console.error("Error updating status: ", e);
         }
     }
+
+    // for show completed only and hide completed
+    const fetchTodoFilters = async(completedOnly: boolean) => {
+        try {
+            const endpoint = completedOnly ? "http://localhost:4000/todos/filter/completed" : "http://localhost:4000/todos/filter/incomplete";
+
+            const response = await fetch(endpoint);
+            if (!response.ok) throw new Error("Network response is NOT OK");
+            const data = await response.json();
+            setTodos(data);
+        }
+        catch(e) {
+            console.error("Error fetching tasks: ", e);
+        }
+    };
+
+    // delete all todos
+    const handleDeleteAll = async () => {
+        if (!confirm("Are you sure you want to delete?")) return;
+
+        try {
+            // use the delete from the express backend
+            const response = await fetch(`/todos/delete`, {
+                method: "DELETE",
+            });
+
+            if (!response.ok) throw new Error("Failed to delete all tasks");
+
+            // Update the UI to show empty
+            setTodos([]); 
+        
+            alert("All tasks deleted successfully!");
+        } catch (error) {
+            console.error("Delete error:", error);
+        }
+    };
+
     return (
         <div>
             {/* Add task button */}
@@ -103,15 +140,18 @@ export function Tasks({ isDarkMode, toggleDarkMode }: DarkModeProps) {
                     className="flex gap-2 items-center whitespace-nowrap text-md bg-gray-500 text-white px-3 py-2 hover:bg-gray-600 rounded-md transition-all shrink-0 cursor-pointer">
                     Switch to {isDarkMode ? 'Light Mode' : 'Dark Mode'} <SunMoon/>
                 </button>
-                <button 
+                <button onClick={() => fetchTodoFilters(true)} 
                     className="flex gap-2 items-center whitespace-nowrap text-md bg-gray-500 text-white px-3 py-2 hover:bg-gray-600 rounded-md transition-all shrink-0 cursor-pointer">
                     Show Completed Only <Eye />
                 </button>
-                <button 
-                className="flex gap-2 items-center whitespace-nowrap text-md bg-gray-500 text-white px-3 py-2 hover:bg-gray-600 rounded-md transition-all shrink-0 cursor-pointer">
+                <button onClick={() => fetchTodoFilters(false)}
+                    className="flex gap-2 items-center whitespace-nowrap text-md bg-gray-500 text-white px-3 py-2 hover:bg-gray-600 rounded-md transition-all shrink-0 cursor-pointer">
                     Hide Completed <EyeOff />
                 </button>
-                <button className="flex gap-1 items-center text-md bg-red-500 text-white px-2 py-2 hover:bg-red-700 rounded-md transition-all shrink-0 cursor-pointer">
+                <button onClick={handleDeleteAll} 
+                    // disable button if todos length is 0 or no todos created
+                    disabled={todos.length === 0}
+                    className={`flex gap-1 items-center text-md px-2 py-2 rounded-md transition-all shrink-0 cursor-pointer ${todos.length === 0 ? 'bg-gray-500 cursor-not-allowed opacity-50' : 'bg-red-500 hover:bg-red-700 text-white'}`}>
                     Delete All <Trash2 />
                 </button>
             </div>
