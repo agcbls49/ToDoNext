@@ -291,6 +291,20 @@ app.put("/todos/:id", async (req: Request<{ id: string }>, res: Response): Promi
     }
 });
 
+// Delete all todos
+app.delete("/todos/delete", async (req: Request, res: Response): Promise<void> => {
+    try {
+        await db.query<ResultSetHeader>("TRUNCATE TABLE todos");
+
+        res.status(200).json({ message: "All todos deleted successfully!" });
+    } 
+    catch (e: any) 
+    {
+        console.error(e);
+        res.status(500).json({ error: "Database Error" });
+    }
+});
+
 // DELETE a todo
 app.delete("/todos/:id", async (req: Request<{ id: string }>, res: Response): Promise<void> => {
     const todoId: number = parseInt(req.params.id);
@@ -311,20 +325,6 @@ app.delete("/todos/:id", async (req: Request<{ id: string }>, res: Response): Pr
         }
 
         res.status(200).json({ message: "Todo deleted successfully!" });
-    } 
-    catch (e: any) 
-    {
-        console.error(e);
-        res.status(500).json({ error: "Database Error" });
-    }
-});
-
-// Delete all todos
-app.delete("/todos/delete", async (req: Request, res: Response): Promise<void> => {
-    try {
-        await db.query<ResultSetHeader>("TRUNCATE TABLE todos");
-
-        res.status(200).json({ message: "All todos deleted successfully!" });
     } 
     catch (e: any) 
     {
