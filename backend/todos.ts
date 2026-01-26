@@ -1,6 +1,7 @@
 // Database Setup
 import dotenv from 'dotenv';
 import mysql, { Pool, ResultSetHeader, RowDataPacket } from 'mysql2/promise';
+import { Todo, TodoResponse, DatabaseConfig } from './types/db_types'
 import express, { Application, Request, Response } from 'express';
 import cors from 'cors';
 
@@ -14,33 +15,6 @@ dotenv.config();
     while environment variables are always strings 
 */
 const PORT: number = parseInt(process.env.PORT || '4000', 10);
-
-// Interface Object for the Todo in the database
-interface Todo {
-    id: number;
-    task: string;
-    tags: string;
-    completed: number; // 0 or 1 in database
-}
-
-// Interface Object of todo that is sent back to the Frontend
-interface TodoResponse {
-    id: number;
-    task: string;
-    tags: string;
-    completed: boolean; // front end version
-}
-
-// Interface for Database Config Setup
-interface DatabaseConfig {
-    host: string | undefined;
-    user: string | undefined;
-    password: string | undefined;
-    database: string | undefined;
-    waitForConnections: boolean;
-    connectionLimit: number;
-    queueLimit: number;
-}
 
 const dbConfig: DatabaseConfig = {
     host: process.env.DB_HOST,
