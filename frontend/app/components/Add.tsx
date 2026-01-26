@@ -5,9 +5,11 @@ import { useState } from "react";
 // for the dark mode
 interface DarkModeProps {
     isDarkMode: boolean;
+    // have to add this to prevent changing themes when add task button is clicked
+    onTaskAdded?: () => void;
 }
 
-export default function Add({ isDarkMode } : DarkModeProps) {
+export default function Add({ isDarkMode, onTaskAdded } : DarkModeProps) {
     const [taskInput, setTaskInput] = useState<string>("");
     const [tagsInput, setTagsInput] = useState<string>("");
     const [tagsArray, setTags] = useState<string[]>([]);
@@ -44,8 +46,11 @@ export default function Add({ isDarkMode } : DarkModeProps) {
                 setTaskInput("");
                 setTagsInput("");
                 setTags([]);
-                // refresh window to show the new todo
-                window.location.reload();
+
+                // this returns a callback instead of reloading the page to see the result
+                if (onTaskAdded) {
+                    onTaskAdded();
+                }
             }
         }
         catch(e) {

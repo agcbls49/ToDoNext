@@ -84,8 +84,9 @@ export function Tasks({ isDarkMode, toggleDarkMode }: DarkModeProps) {
     }
     return (
         <div>
+            {/* Add task button */}
+            <Add isDarkMode={isDarkMode} onTaskAdded={() => fetchTodos("")}/>
             {/* Sorting buttons */}
-            <Add isDarkMode={isDarkMode}/>
             <div className="mt-5 flex space-x-5">
                 <button onClick={() => fetchTodos("asc")}
                     className="flex items-center text-lg bg-gray-500 text-white px-8 py-2 hover:bg-gray-600 rounded-md transition-all duration-300 ease-in-out cursor-pointer">
@@ -109,7 +110,7 @@ export function Tasks({ isDarkMode, toggleDarkMode }: DarkModeProps) {
                         handleToggleComplete(todo.id, todo.completed)
                         }}
                         className={`flex justify-between items-center text-lg py-3 px-4 mb-3 rounded-lg shadow-lg hover:shadow-2xl transition-all duration-300 ease-in-out cursor-pointer 
-                            ${isDarkMode ? 'bg-[#0a0a0a] text-white hover:shadow-[0_0_15px_rgba(255,240,0,0.3)]' : 'bg-white text-black hover:shadow-2xl'}`}>
+                            ${isDarkMode ? 'bg-[#0a0a0a] text-white hover:shadow-[0_0_15px_rgba(255,240,0,0.3)]' : 'bg-white text-black hover:shadow-xl'}`}>
                         <div className="flex items-center space-x-4">
                         {/* Only the task text gets line-through and opacity */}
                             <strong className={`text-lg
