@@ -127,7 +127,7 @@ export function Tasks({ isDarkMode, toggleDarkMode }: DarkModeProps) {
             {/* Add task button */}
             <Add isDarkMode={isDarkMode} onTaskAdded={() => fetchTodos("")}/>
             {/* Sorting buttons */}
-            <div className="mt-5 flex flex-nowrap items-center gap-2">
+            <div className="mt-5 flex flex-nowrap items-center gap-2.5">
                 <button onClick={() => fetchTodos("asc")}
                     className="flex items-center whitespace-nowrap text-md bg-gray-500 text-white px-3 py-2 hover:bg-gray-600 rounded-md transition-all shrink-0 cursor-pointer">
                     Sort <ArrowUpAZ className="ml-2" />
@@ -138,11 +138,11 @@ export function Tasks({ isDarkMode, toggleDarkMode }: DarkModeProps) {
                 </button>
                 <button onClick={toggleDarkMode}
                     className="flex gap-2 items-center whitespace-nowrap text-md bg-gray-500 text-white px-3 py-2 hover:bg-gray-600 rounded-md transition-all shrink-0 cursor-pointer">
-                    Switch to {isDarkMode ? 'Light Mode' : 'Dark Mode'} <SunMoon/>
+                    {isDarkMode ? 'Light Mode' : 'Dark Mode'} <SunMoon/>
                 </button>
                 <button onClick={() => fetchTodoFilters(true)} 
                     className="flex gap-2 items-center whitespace-nowrap text-md bg-gray-500 text-white px-3 py-2 hover:bg-gray-600 rounded-md transition-all shrink-0 cursor-pointer">
-                    Show Completed Only <Eye />
+                    Completed <Eye />
                 </button>
                 <button onClick={() => fetchTodoFilters(false)}
                     className="flex gap-2 items-center whitespace-nowrap text-md bg-gray-500 text-white px-3 py-2 hover:bg-gray-600 rounded-md transition-all shrink-0 cursor-pointer">
@@ -151,8 +151,8 @@ export function Tasks({ isDarkMode, toggleDarkMode }: DarkModeProps) {
                 <button onClick={handleDeleteAll} 
                     // disable button if todos length is 0 or no todos created
                     disabled={todos.length === 0}
-                    className={`flex gap-1 items-center text-md px-2 py-2 rounded-md transition-all shrink-0 cursor-pointer ${todos.length === 0 ? 'bg-gray-500 cursor-not-allowed opacity-50' : 'bg-red-500 hover:bg-red-700 text-white'}`}>
-                    Delete All <Trash2 />
+                    className={`flex gap-2 items-center text-md px-2 py-2 rounded-md transition-all shrink-0 cursor-pointer ${todos.length === 0 ? 'bg-gray-500 cursor-not-allowed opacity-50' : 'bg-red-500 hover:bg-red-700 text-white'}`}>
+                    All <Trash2 />
                 </button>
             </div>
             <ul className="mt-5">
