@@ -9,3 +9,6 @@ A To Do Application that uses the following technologies:
 **Backend:**
 1. Express JS
 2. MySQL Database
+
+**NOTE:** <br>
+Project is not mobile responsive and Database is not included. Refreshing the page switches dark mode to light mode.

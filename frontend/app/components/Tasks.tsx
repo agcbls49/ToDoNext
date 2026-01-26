@@ -11,6 +11,9 @@ import { Todo } from "../types/todo";
 import { ArrowUpAZ } from 'lucide-react';
 import { ArrowUpZA } from 'lucide-react';
 import { SunMoon } from 'lucide-react';
+import { Eye } from 'lucide-react';
+import { EyeOff } from 'lucide-react';
+import { Trash2 } from 'lucide-react';
 
 // for the dark mode
 interface DarkModeProps {
@@ -87,18 +90,29 @@ export function Tasks({ isDarkMode, toggleDarkMode }: DarkModeProps) {
             {/* Add task button */}
             <Add isDarkMode={isDarkMode} onTaskAdded={() => fetchTodos("")}/>
             {/* Sorting buttons */}
-            <div className="mt-5 flex space-x-5">
+            <div className="mt-5 flex flex-nowrap items-center gap-2">
                 <button onClick={() => fetchTodos("asc")}
-                    className="flex items-center text-lg bg-gray-500 text-white px-8 py-2 hover:bg-gray-600 rounded-md transition-all duration-300 ease-in-out cursor-pointer">
-                    Sort Ascending <ArrowUpAZ className="ml-2" />
+                    className="flex items-center whitespace-nowrap text-md bg-gray-500 text-white px-3 py-2 hover:bg-gray-600 rounded-md transition-all shrink-0 cursor-pointer">
+                    Sort <ArrowUpAZ className="ml-2" />
                 </button>
                 <button onClick={() => fetchTodos("desc")}
-                    className="flex items-center text-lg bg-gray-500 text-white px-6 py-2 hover:bg-gray-600 rounded-md transition-all duration-300 ease-in-out cursor-pointer">
-                    Sort Descending <ArrowUpZA className="ml-2" />
+                    className="flex items-center whitespace-nowrap text-md bg-gray-500 text-white px-3 py-2 hover:bg-gray-600 rounded-md transition-all shrink-0 cursor-pointer">
+                    Sort <ArrowUpZA className="ml-2" />
                 </button>
                 <button onClick={toggleDarkMode}
-                    className="flex items-center gap-x-2 text-lg bg-gray-500 text-white px-6 py-2 hover:bg-gray-600 rounded-md transition-all duration-300 ease-in-out cursor-pointer">
+                    className="flex gap-2 items-center whitespace-nowrap text-md bg-gray-500 text-white px-3 py-2 hover:bg-gray-600 rounded-md transition-all shrink-0 cursor-pointer">
                     Switch to {isDarkMode ? 'Light Mode' : 'Dark Mode'} <SunMoon/>
+                </button>
+                <button 
+                    className="flex gap-2 items-center whitespace-nowrap text-md bg-gray-500 text-white px-3 py-2 hover:bg-gray-600 rounded-md transition-all shrink-0 cursor-pointer">
+                    Show Completed Only <Eye />
+                </button>
+                <button 
+                className="flex gap-2 items-center whitespace-nowrap text-md bg-gray-500 text-white px-3 py-2 hover:bg-gray-600 rounded-md transition-all shrink-0 cursor-pointer">
+                    Hide Completed <EyeOff />
+                </button>
+                <button className="flex gap-1 items-center text-md bg-red-500 text-white px-2 py-2 hover:bg-red-700 rounded-md transition-all shrink-0 cursor-pointer">
+                    Delete All <Trash2 />
                 </button>
             </div>
             <ul className="mt-5">
