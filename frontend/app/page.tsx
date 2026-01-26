@@ -1,16 +1,21 @@
 "use client";
 
 import { Tasks } from "./components/Tasks";
-import Add from "./components/Add";
+import { useState } from "react";
 
 export default function Home() {
+  const [isDarkMode, setDarkMode] = useState<boolean>(false);
+
+  function toggleDarkMode():void {
+    setDarkMode(!isDarkMode);
+  }
+  
   return (
-    <main className='py-10 h-screen space-y-5 overflow-y-auto'>
+    <main className={`py-10 h-screen space-y-5 overflow-y-auto ${isDarkMode ? 'bg-[#0a0a0a] text-white' : 'bg-[#e9e9e9] text-black'}`}>
         <h1 className='font-bold text-3xl text-center'>ToDoNext</h1>
         {/* center and give max width which prevents it from going to the edge of the screen */}
-        <div className='w-[50%] dark:text-white dark:bg-[#171717] bg-gray-50 mx-auto rounded-md p-5 space-y-6 shadow-lg'>
-          <Add/>
-          <Tasks/>
+        <div className={`w-[50%] mx-auto rounded-md p-5 space-y-6 shadow-lg ${isDarkMode ?  'bg-[#171717] text-white' : 'bg-gray-50 text-black'}`}>
+          <Tasks isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode}/>
         </div>
     </main>
   );

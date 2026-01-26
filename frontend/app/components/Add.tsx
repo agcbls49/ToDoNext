@@ -2,7 +2,12 @@
 
 import { useState } from "react";
 
-export default function Add() {
+// for the dark mode
+interface DarkModeProps {
+    isDarkMode: boolean;
+}
+
+export default function Add({ isDarkMode } : DarkModeProps) {
     const [taskInput, setTaskInput] = useState<string>("");
     const [tagsInput, setTagsInput] = useState<string>("");
     const [tagsArray, setTags] = useState<string[]>([]);
@@ -55,13 +60,12 @@ export default function Add() {
                 <input value={taskInput} 
                 onChange={(e) => setTaskInput(e.target.value)}
                 placeholder="Make a Task"
-                className="dark:text-white dark:border-gray-600 placeholder-gray-500 rounded-md grow border border-black p-2 w-full"/>
+                className={`placeholder-gray-500 rounded-md grow border border-black p-2 w-full ${isDarkMode ? 'border-gray-600 text-white' : 'text-black'}`}/>
                 {/* Tags input */}
                 <input value={tagsInput} 
                 onChange={handleTagsInputChange}
                 placeholder="Add tags (comma separated)"
-                className="dark:text-white dark:border-gray-600 placeholder-gray-500 rounded-md grow border border-black p-2 w-full"
-                />
+                className={`placeholder-gray-500 rounded-md grow border border-black p-2 w-full ${isDarkMode ? 'border-gray-600 text-white' : 'text-black'}`}/>
                 {/* Add task button */}
                 <button type="submit"
                 className="font-bold text-lg bg-amber-400 text-white px-4 py-2 hover:bg-amber-500 rounded-md transition-all duration-300 ease-in-out cursor-pointer w-full">

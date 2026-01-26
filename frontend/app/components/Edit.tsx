@@ -7,9 +7,11 @@ import { Pencil } from 'lucide-react';
 type EditProps = {
     todo: Todo; 
     onEditComplete: () => void;
+    // for the dark mode
+    isDarkMode: boolean;
 };
 
-export default function Edit({ todo, onEditComplete }: EditProps) {
+export default function Edit({ todo, onEditComplete, isDarkMode }: EditProps) {
     const [task, setTask] = useState<string>(todo.task);
     const [tags, setTags] = useState<string>(todo.tags);
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -57,7 +59,7 @@ export default function Edit({ todo, onEditComplete }: EditProps) {
 
             {/* modal overlay for editing task */}
             {isModalOpen && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#e9e9e9] dark:bg-[#0a0a0a] bg-opacity-50"
+                <div className={`fixed inset-0 z-50 flex items-center justify-center p-4 bg-opacity-50 ${isDarkMode ? 'bg-[#0a0a0a]' : 'bg-[#e9e9e9]'}`}
                     onClick={(e) => {
                         e.stopPropagation();
                         setIsModalOpen(false); // Close modal when clicking overlay
@@ -78,12 +80,12 @@ export default function Edit({ todo, onEditComplete }: EditProps) {
 
                         {/* Task input */}
                         <div className="w-250 mt-10">
-                            <label className="block text-black text-md font-medium mb-1 dark:text-gray-300">
+                            <label className={`block text-md font-medium mb-1 ${isDarkMode ? 'text-gray-300' : 'text-black'}`}>
                                 Task
                             </label>
                             <input value={task}
                                 onChange={(e) => setTask(e.target.value)}
-                                className="w-full text-black bg-white dark:text-white dark:bg-[#171717] dark:border-gray-600 placeholder-gray-500 rounded-md border border-black p-3"
+                                className={`w-full placeholder-gray-500 rounded-md border border-black p-3 ${isDarkMode ? 'bg-[#171717] border-gray-600 text-white': 'bg-white text-black'}`}
                                 placeholder="Edit Task"
                                 onClick={(e) => e.stopPropagation()}
                                 onMouseDown={(e) => e.stopPropagation()}
@@ -92,12 +94,12 @@ export default function Edit({ todo, onEditComplete }: EditProps) {
 
                         {/* Tags input */}
                         <div>
-                            <label className="block text-black text-md font-medium mb-1 dark:text-gray-300">
+                            <label className={`block text-md font-medium mb-1 ${isDarkMode ? 'text-gray-300' : 'text-black'}`}>
                                 Tags
                             </label>
                             <input value={tags}
                                 onChange={(e) => setTags(e.target.value)}
-                                className="w-full text-black bg-white dark:text-white dark:bg-[#171717] dark:border-gray-600 placeholder-gray-500 rounded-md border border-black p-3"
+                                className={`w-full placeholder-gray-500 rounded-md border border-black p-3 ${isDarkMode ? 'bg-[#171717] border-gray-600 text-white': 'bg-white text-black'}`}
                                 placeholder="Edit tags (comma separated)"
                                 onClick={(e) => e.stopPropagation()}
                                 onMouseDown={(e) => e.stopPropagation()}
