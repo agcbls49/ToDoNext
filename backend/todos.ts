@@ -158,6 +158,50 @@ app.get("/todos/sort/desc", async (req: Request, res: Response): Promise<void> =
     }
 });
 
+// Filter completed only 
+app.get("/todos/filter/completed", async (req: Request, res: Response): Promise<void> => {
+    try {
+        const [rows] = await db.query<(RowDataPacket & Todo)[]>("SELECT * FROM todos WHERE completed = 1");
+        
+        const todos: TodoResponse[] = rows.map((row: RowDataPacket & Todo) => ({
+            id: row.id,
+            task: row.task,
+            tags: row.tags,
+            completed: Boolean(row.completed)
+        }));
+
+        res.json(todos);
+    } 
+    catch (e: any) 
+    {
+        console.error(e);
+        // Internal Server Error
+        res.status(500).json({ error: "Database Error" });
+    }
+});
+
+// Hide completed 
+app.get("/todos/filter/incomplete", async (req: Request, res: Response): Promise<void> => {
+    try {
+        const [rows] = await db.query<(RowDataPacket & Todo)[]>("SELECT * FROM todos WHERE completed = 0");
+        
+        const todos: TodoResponse[] = rows.map((row: RowDataPacket & Todo) => ({
+            id: row.id,
+            task: row.task,
+            tags: row.tags,
+            completed: Boolean(row.completed)
+        }));
+
+        res.json(todos);
+    } 
+    catch (e: any) 
+    {
+        console.error(e);
+        // Internal Server Error
+        res.status(500).json({ error: "Database Error" });
+    }
+});
+
 // POST CREATE new todo
 app.post("/todos/", async (req: Request, res: Response): Promise<void> => {
     // ? is used to check if undefined or missing
@@ -267,6 +311,20 @@ app.delete("/todos/:id", async (req: Request<{ id: string }>, res: Response): Pr
         }
 
         res.status(200).json({ message: "Todo deleted successfully!" });
+    } 
+    catch (e: any) 
+    {
+        console.error(e);
+        res.status(500).json({ error: "Database Error" });
+    }
+});
+
+// Delete all todos
+app.delete("/todos/delete", async (req: Request, res: Response): Promise<void> => {
+    try {
+        await db.query<ResultSetHeader>("TRUNCATE TABLE todos");
+
+        res.status(200).json({ message: "All todos deleted successfully!" });
     } 
     catch (e: any) 
     {
