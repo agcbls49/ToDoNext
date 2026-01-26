@@ -36,7 +36,8 @@ A To Do Application that allows users to Create Tasks, Edit Tasks, Delete tasks 
 ### Click Task to Complete
 <img width="987" height="791" alt="Image" src="https://github.com/user-attachments/assets/95ec9076-8e5d-426d-a2f6-f9d0ab2d9bea" />
 
-## Screenshot (Light Mode)
+
+## Screenshots (Light Mode)
 <img width="979" height="824" alt="Image" src="https://github.com/user-attachments/assets/b30aad64-aae9-486c-843a-fe4cc609a8f3" />
 
 <img width="1271" height="496" alt="Image" src="https://github.com/user-attachments/assets/f8190900-ea79-4be1-8a78-e300c702ce32" />
