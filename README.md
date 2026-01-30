@@ -16,26 +16,26 @@ A To Do Application that allows users to Create Tasks, Edit Tasks, Delete tasks 
 12. Back to top button
 
 ## Screenshots
-
-
+<img width="983" height="836" alt="Image" src="https://github.com/user-attachments/assets/c429176a-f0a1-47c7-81f6-47b83caf06f0" />
+<img width="994" height="220" alt="Image" src="https://github.com/user-attachments/assets/da049d4b-97f1-4775-812a-f1935b203d45" />
 
 ### Sort in Ascending Order
-
+<img width="986" height="508" alt="Image" src="https://github.com/user-attachments/assets/3feb5411-fadb-48a9-8d9b-b0daec8a666b" />
 
 ### Sort in Descending Order
-
+<img width="968" height="513" alt="Image" src="https://github.com/user-attachments/assets/8c48900b-961f-4ef2-8143-8518b05966fd" />
 
 ### Show Completed Task/s
-
+<img width="988" height="791" alt="Image" src="https://github.com/user-attachments/assets/ec6d142b-d1e7-4adf-9f52-542e31827aac" />
 
 ### Hide Completed Task/s
-
+<img width="985" height="762" alt="Image" src="https://github.com/user-attachments/assets/c5a08edb-24a1-4067-a30d-cca26101ecd2" />
 
 ### Edit Task
 <img width="1274" height="508" alt="Image" src="https://github.com/user-attachments/assets/cfd2cdf6-f06e-436c-9b91-fb3d9c6db3f2" />
 
 ### Click Task to Complete
-
+<img width="990" height="636" alt="Image" src="https://github.com/user-attachments/assets/68d3582c-2af3-4dd0-8206-022452aa135c" />
 
 ## Tech Stack
 
