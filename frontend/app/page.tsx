@@ -20,6 +20,10 @@ export default function Home() {
           <Tasks isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode}/>
           {/* Back to top button */}
           <div className="flex justify-end">
+            <div>
+              <a href="">Previous</a>
+              <a href="">1</a>
+            </div>
             <button onClick={(e) => e.currentTarget.closest('main')?.scrollTo({ top: 0, behavior: 'smooth' })}
               className="font-bold gap-1 bg-amber-400 text-white px-4 py-2 hover:bg-amber-500 rounded-md transition-all duration-300 ease-in-out cursor-pointer flex items-center">
                 Back to Top <ArrowUp />

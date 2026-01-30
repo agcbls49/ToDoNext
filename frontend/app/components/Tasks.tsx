@@ -24,11 +24,13 @@ interface DarkModeProps {
 export function Tasks({ isDarkMode, toggleDarkMode }: DarkModeProps) {
     const [todos, setTodos] = useState<Todo[]>([]);
 
+    const [currentPage, setCurrentPage] = useState(1);
+
     // show all the todos
     const fetchTodos = async(order: string) => {
         try {
             // default endpoint to fetch all todos
-            let endpoint = "/todos";
+            let endpoint = `/todos/`;
         
             // go to sorted endpoints
             if(order === "asc") { 
@@ -127,31 +129,31 @@ export function Tasks({ isDarkMode, toggleDarkMode }: DarkModeProps) {
             {/* Add task button */}
             <Add isDarkMode={isDarkMode} onTaskAdded={() => fetchTodos("")}/>
             {/* Sorting buttons */}
-            <div className="mt-5 flex flex-nowrap items-center gap-2.5">
+            <div className="mt-5 flex flex-nowrap items-center w-full gap-2.5">
                 <button onClick={() => fetchTodos("asc")}
-                    className="flex items-center whitespace-nowrap text-md bg-gray-500 text-white px-3 py-2 hover:bg-gray-600 rounded-md transition-all shrink-0 cursor-pointer">
+                    className="flex flex-1 items-center justify-center whitespace-nowrap text-md bg-gray-500 text-white px-3 py-2 hover:bg-gray-600 rounded-md transition-all cursor-pointer">
                     Sort <ArrowUpAZ className="ml-2" />
                 </button>
                 <button onClick={() => fetchTodos("desc")}
-                    className="flex items-center whitespace-nowrap text-md bg-gray-500 text-white px-3 py-2 hover:bg-gray-600 rounded-md transition-all shrink-0 cursor-pointer">
+                    className="flex flex-1 items-center justify-center whitespace-nowrap text-md bg-gray-500 text-white px-3 py-2 hover:bg-gray-600 rounded-md transition-all cursor-pointer">
                     Sort <ArrowUpZA className="ml-2" />
                 </button>
                 <button onClick={toggleDarkMode}
-                    className="flex gap-2 items-center whitespace-nowrap text-md bg-gray-500 text-white px-3 py-2 hover:bg-gray-600 rounded-md transition-all shrink-0 cursor-pointer">
+                    className="flex flex-1 items-center justify-center whitespace-nowrap text-md bg-gray-500 text-white px-3 py-2 hover:bg-gray-600 rounded-md transition-all cursor-pointer">
                     {isDarkMode ? 'Light Mode' : 'Dark Mode'} <SunMoon/>
                 </button>
                 <button onClick={() => fetchTodoFilters(true)} 
-                    className="flex gap-2 items-center whitespace-nowrap text-md bg-gray-500 text-white px-3 py-2 hover:bg-gray-600 rounded-md transition-all shrink-0 cursor-pointer">
+                    className="flex flex-1 items-center justify-center whitespace-nowrap text-md bg-gray-500 text-white px-3 py-2 hover:bg-gray-600 rounded-md transition-all cursor-pointer">
                     Completed <Eye />
                 </button>
                 <button onClick={() => fetchTodoFilters(false)}
-                    className="flex gap-2 items-center whitespace-nowrap text-md bg-gray-500 text-white px-3 py-2 hover:bg-gray-600 rounded-md transition-all shrink-0 cursor-pointer">
+                    className="flex flex-1 items-center justify-center whitespace-nowrap text-md bg-gray-500 text-white px-3 py-2 hover:bg-gray-600 rounded-md transition-all cursor-pointer">
                     Hide Completed <EyeOff />
                 </button>
                 <button onClick={handleDeleteAll} 
                     // disable button if todos length is 0 or no todos created
                     disabled={todos.length === 0}
-                    className={`flex gap-2 items-center text-md px-2 py-2 rounded-md transition-all shrink-0 cursor-pointer ${todos.length === 0 ? 'bg-gray-500 cursor-not-allowed opacity-50' : 'bg-red-500 hover:bg-red-700 text-white'}`}>
+                    className={`flex flex-1 gap-2 items-center justify-center text-md px-2 py-2 rounded-md transition-all cursor-pointer ${todos.length === 0 ? 'bg-gray-500 cursor-not-allowed opacity-50' : 'bg-red-500 hover:bg-red-700 text-white'}`}>
                     All <Trash2 />
                 </button>
             </div>

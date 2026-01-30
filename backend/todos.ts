@@ -114,6 +114,37 @@ app.get("/todos/:id", async (req: Request<{ id: string }>, res: Response): Promi
     }
 });
 
+// PAGINATION
+app.get("/todos/:page", async(req: Request<{ page: string }>, res: Response): Promise<void> => {
+    try {
+        // Get page number from the url
+        const page = parseInt(req.params.page);
+
+        // Items to show per page
+        const pageSize = 5;
+
+        // if in page 1 then no skipping
+        // if page 2 then skip 5 since 2 - 1 = 1 * 5 = 5
+        const rowsToSkip = (page - 1) * pageSize;
+
+        const [rows] = await db.query<(RowDataPacket & Todo)[]>("SELECT * FROM todos ORDER BY id LIMIT ? OFFSET ?", [pageSize, rowsToSkip]);
+
+        const todos: TodoResponse[] = rows.map((row:RowDataPacket & Todo) => ({
+            id: row.id,
+            task: row.task,
+            tags: row.tags,
+            completed: Boolean(row.completed)
+        }));
+
+        res.json(todos);
+    }
+    catch(e: any) {
+        console.error(e);
+        // Internal Server Error
+        res.status(500).json({ error: "Database Error" });
+    }
+});
+
 // Sort the todo alphabetically
 app.get("/todos/sort/asc", async (req: Request, res: Response): Promise<void> => {
     try {
