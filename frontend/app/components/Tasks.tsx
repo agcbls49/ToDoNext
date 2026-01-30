@@ -34,10 +34,10 @@ export function Tasks({ isDarkMode, toggleDarkMode }: DarkModeProps) {
 
             // go to sorted endpoints
             if(order === "asc") { 
-                endpoint = "/todos/sort/asc"; 
+                endpoint = "/tasks/sort/asc"; 
             }
             if(order === "desc") {
-                endpoint = "/todos/sort/desc"; 
+                endpoint = "/tasks/sort/desc"; 
             }
 
             const response = await fetch(endpoint);
@@ -61,11 +61,11 @@ export function Tasks({ isDarkMode, toggleDarkMode }: DarkModeProps) {
     const handleToggleComplete = async(id: number, currentStatus: boolean) => {
         try {
             const todoToUpdate = todos.find(todo => todo.id === id);
-            console.log("Found todo:", todoToUpdate?.task);
+            console.log("Found task:", todoToUpdate?.task);
 
             if(!todoToUpdate) return;
 
-            const response = await fetch(`/todos/${id}`, {
+            const response = await fetch(`/tasks/${id}`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ 
@@ -91,7 +91,7 @@ export function Tasks({ isDarkMode, toggleDarkMode }: DarkModeProps) {
     // for show completed only and hide completed
     const fetchTodoFilters = async(completedOnly: boolean) => {
         try {
-            const endpoint = completedOnly ? "http://localhost:4000/todos/filter/completed" : "http://localhost:4000/todos/filter/incomplete";
+            const endpoint = completedOnly ? "/tasks/filter/completed" : "/tasks/filter/incomplete";
 
             const response = await fetch(endpoint);
             if (!response.ok) throw new Error("Network response is NOT OK");
@@ -109,7 +109,7 @@ export function Tasks({ isDarkMode, toggleDarkMode }: DarkModeProps) {
 
         try {
             // use the delete from the express backend
-            const response = await fetch(`/todos/delete`, {
+            const response = await fetch(`/tasks/delete`, {
                 method: "DELETE",
             });
 
