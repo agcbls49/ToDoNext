@@ -24,13 +24,16 @@ interface DarkModeProps {
 export function Tasks({ isDarkMode, toggleDarkMode }: DarkModeProps) {
     const [todos, setTodos] = useState<Todo[]>([]);
 
+    // for the pagination
     const [currentPage, setCurrentPage] = useState(1);
 
     // show all the todos
     const fetchTodos = async(order: string) => {
         try {
             // default endpoint to fetch all todos
-            let endpoint = `/todos/`;
+            // let endpoint = `/todos/`;
+
+            let endpoint = `/todos/pages/${currentPage}`;
         
             // go to sorted endpoints
             if(order === "asc") { 

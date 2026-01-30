@@ -114,8 +114,8 @@ app.get("/todos/:id", async (req: Request<{ id: string }>, res: Response): Promi
     }
 });
 
-// PAGINATION
-app.get("/todos/:page", async(req: Request<{ page: string }>, res: Response): Promise<void> => {
+// PAGINATION WORKING BUT CANT ROUTE TO FRONTEND
+app.get("/todos/pages/:page", async(req: Request<{ page: string }>, res: Response): Promise<void> => {
     try {
         // Get page number from the url
         const page = parseInt(req.params.page);
