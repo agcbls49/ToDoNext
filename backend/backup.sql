@@ -16,29 +16,29 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `todos`
+-- Table structure for table `tasks`
 --
 
-DROP TABLE IF EXISTS `todos`;
+DROP TABLE IF EXISTS `tasks`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `todos` (
+CREATE TABLE `tasks` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `task` text NOT NULL,
-  `tags` text,
-  `completed` tinyint(1) NOT NULL DEFAULT '0',
+  `task` varchar(255) NOT NULL,
+  `tags` varchar(255) DEFAULT NULL,
+  `completed` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `todos`
+-- Dumping data for table `tasks`
 --
 
-LOCK TABLES `todos` WRITE;
-/*!40000 ALTER TABLE `todos` DISABLE KEYS */;
-INSERT INTO `todos` VALUES (1,'Code To Do App','Tech',0),(2,'Feed cat','Errand',1),(3,'Clean bookshelf','Home',0);
-/*!40000 ALTER TABLE `todos` ENABLE KEYS */;
+LOCK TABLES `tasks` WRITE;
+/*!40000 ALTER TABLE `tasks` DISABLE KEYS */;
+INSERT INTO `tasks` VALUES (1,'Code Frontend','Tech',0),(2,'Feed Cat','Pet',0),(3,'Do Laundry','Home',1),(4,'Study','School',0),(5,'Exercise','Health',0),(6,'Buy Essential','Errands',1),(7,'Take out Trash','Home, Errands',0),(8,'Fold clothes','Home',1),(9,'Study for quiz','School',0),(10,'Do Yoga','Health',0);
+/*!40000 ALTER TABLE `tasks` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -50,4 +50,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-01-20 18:32:51
+-- Dump completed on 2026-01-31  2:20:00

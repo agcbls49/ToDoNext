@@ -12,7 +12,8 @@ A To Do Application that allows users to Create Tasks, Edit Tasks, Delete tasks 
 8. Set theme to Dark Mode / Light Mode*
 9. Delete a task
 10. Delete all tasks
-11. Back to top button
+11. Pagination
+12. Back to top button
 
 ## Screenshots
 ### Show Newly Created Task

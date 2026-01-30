@@ -32,8 +32,8 @@ Inside `frontend/next.config.ts` below `/* config options here */` add
   async rewrites() {
     return [
       {
-        source: '/api',
-        destination: 'http://localhost:4000/todos',
+        source: '/tasks/:path*',
+        destination: 'http://localhost:4000/tasks/:path*',
       },
     ];
   },
@@ -61,4 +61,4 @@ npm run dev
 
 **NOTE: Make sure both the two localhost are opened by doing the commands above.**
 
-Check API json object by pasting this in the browser tab: `http://localhost:4000/todos`
+Check API json object by pasting this in the browser tab: `http://localhost:4000/tasks`

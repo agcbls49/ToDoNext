@@ -6,8 +6,8 @@ const nextConfig: NextConfig = {
     return [
       {
         // path* to use all routes in express backend
-        source: '/todos/:path*',
-        destination: 'http://localhost:4000/todos/:path*',
+        source: '/tasks/:path*',
+        destination: 'http://localhost:4000/tasks/:path*',
       },
     ];
   },

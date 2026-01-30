@@ -53,14 +53,14 @@ app.use(cors({
 app.use(express.json());
 
 // GET ALL todos (go to localhost:4000/)
-app.get("/todos", async (req: Request, res: Response): Promise<void> => {
+app.get("/tasks", async (req: Request, res: Response): Promise<void> => {
     try {
         /* 
             variable rows is used for SELECT
             RowDataPacket represents a single row of 
             data returned from a database query 
         */
-        const [rows] = await db.query<(RowDataPacket & Todo)[]>("SELECT * FROM todos");
+        const [rows] = await db.query<(RowDataPacket & Todo)[]>("SELECT * FROM tasks");
         
         // Convert the raw database rows into the TodoResponse format for the frontend
         const todos: TodoResponse[] = rows.map((row: RowDataPacket & Todo) => ({
@@ -81,18 +81,18 @@ app.get("/todos", async (req: Request, res: Response): Promise<void> => {
     }
 });
 
-// GET SINGLE todo (go to localhost:4000/todos/1)
-app.get("/todos/:id", async (req: Request<{ id: string }>, res: Response): Promise<void> => {
+// GET SINGLE todo (go to localhost:4000/tasks/1)
+app.get("/tasks/:id", async (req: Request<{ id: string }>, res: Response): Promise<void> => {
     const todoId: number = parseInt(req.params.id);
 
     try {
         // ? is a placeholder to prevent SQL Injection
         const [rows] = await db.query<(RowDataPacket & Todo)[]>(
-            "SELECT * FROM todos WHERE id = ?",[todoId]);
+            "SELECT * FROM tasks WHERE id = ?",[todoId]);
     
         // if array is empty then the ID does not exist in the table
         if (rows.length === 0) {
-            res.status(404).json({ message: "Todo not found" });
+            res.status(404).json({ message: "Task not found" });
             return;
         }
     
@@ -114,8 +114,8 @@ app.get("/todos/:id", async (req: Request<{ id: string }>, res: Response): Promi
     }
 });
 
-// PAGINATION WORKING BUT CANT ROUTE TO FRONTEND
-app.get("/todos/pages/:page", async(req: Request<{ page: string }>, res: Response): Promise<void> => {
+// Pagination
+app.get("/tasks/pages/:page", async(req: Request<{ page: string }>, res: Response): Promise<void> => {
     try {
         // Get page number from the url
         const page = parseInt(req.params.page);
@@ -123,11 +123,13 @@ app.get("/todos/pages/:page", async(req: Request<{ page: string }>, res: Respons
         // Items to show per page
         const pageSize = 5;
 
-        // if in page 1 then no skipping
-        // if page 2 then skip 5 since 2 - 1 = 1 * 5 = 5
+        /* 
+            if in page 1 then no skipping
+            if page 2 then skip 5 since 2 - 1 = 1 * 5 = 5 
+        */
         const rowsToSkip = (page - 1) * pageSize;
 
-        const [rows] = await db.query<(RowDataPacket & Todo)[]>("SELECT * FROM todos ORDER BY id LIMIT ? OFFSET ?", [pageSize, rowsToSkip]);
+        const [rows] = await db.query<(RowDataPacket & Todo)[]>("SELECT * FROM tasks ORDER BY id LIMIT ? OFFSET ?", [pageSize, rowsToSkip]);
 
         const todos: TodoResponse[] = rows.map((row:RowDataPacket & Todo) => ({
             id: row.id,
@@ -146,9 +148,9 @@ app.get("/todos/pages/:page", async(req: Request<{ page: string }>, res: Respons
 });
 
 // Sort the todo alphabetically
-app.get("/todos/sort/asc", async (req: Request, res: Response): Promise<void> => {
+app.get("/tasks/sort/asc", async (req: Request, res: Response): Promise<void> => {
     try {
-        const [rows] = await db.query<(RowDataPacket & Todo)[]>("SELECT * FROM todos ORDER BY task ASC");
+        const [rows] = await db.query<(RowDataPacket & Todo)[]>("SELECT * FROM tasks ORDER BY task ASC");
         
         const todos: TodoResponse[] = rows.map((row: RowDataPacket & Todo) => ({
             id: row.id,
@@ -168,9 +170,9 @@ app.get("/todos/sort/asc", async (req: Request, res: Response): Promise<void> =>
 });
 
 // Reset the sorting
-app.get("/todos/sort/desc", async (req: Request, res: Response): Promise<void> => {
+app.get("/tasks/sort/desc", async (req: Request, res: Response): Promise<void> => {
     try {
-        const [rows] = await db.query<(RowDataPacket & Todo)[]>("SELECT * FROM todos ORDER BY task DESC");
+        const [rows] = await db.query<(RowDataPacket & Todo)[]>("SELECT * FROM tasks ORDER BY task DESC");
         
         const todos: TodoResponse[] = rows.map((row: RowDataPacket & Todo) => ({
             id: row.id,
@@ -190,9 +192,9 @@ app.get("/todos/sort/desc", async (req: Request, res: Response): Promise<void> =
 });
 
 // Filter completed only 
-app.get("/todos/filter/completed", async (req: Request, res: Response): Promise<void> => {
+app.get("/tasks/filter/completed", async (req: Request, res: Response): Promise<void> => {
     try {
-        const [rows] = await db.query<(RowDataPacket & Todo)[]>("SELECT * FROM todos WHERE completed = 1");
+        const [rows] = await db.query<(RowDataPacket & Todo)[]>("SELECT * FROM tasks WHERE completed = 1");
         
         const todos: TodoResponse[] = rows.map((row: RowDataPacket & Todo) => ({
             id: row.id,
@@ -202,7 +204,7 @@ app.get("/todos/filter/completed", async (req: Request, res: Response): Promise<
         }));
 
         res.json(todos);
-    } 
+    }
     catch (e: any) 
     {
         console.error(e);
@@ -212,9 +214,9 @@ app.get("/todos/filter/completed", async (req: Request, res: Response): Promise<
 });
 
 // Hide completed 
-app.get("/todos/filter/incomplete", async (req: Request, res: Response): Promise<void> => {
+app.get("/tasks/filter/incomplete", async (req: Request, res: Response): Promise<void> => {
     try {
-        const [rows] = await db.query<(RowDataPacket & Todo)[]>("SELECT * FROM todos WHERE completed = 0");
+        const [rows] = await db.query<(RowDataPacket & Todo)[]>("SELECT * FROM tasks WHERE completed = 0");
         
         const todos: TodoResponse[] = rows.map((row: RowDataPacket & Todo) => ({
             id: row.id,
@@ -234,7 +236,7 @@ app.get("/todos/filter/incomplete", async (req: Request, res: Response): Promise
 });
 
 // POST CREATE new todo
-app.post("/todos/", async (req: Request, res: Response): Promise<void> => {
+app.post("/tasks/", async (req: Request, res: Response): Promise<void> => {
     // ? is used to check if undefined or missing
     const { task, tags, completed }: { task?: string; tags?: string; completed?: boolean } = req.body;
 
@@ -254,7 +256,7 @@ app.post("/todos/", async (req: Request, res: Response): Promise<void> => {
             from non-SELECT queries including affectedRows & insertId 
         */
         const [result] = await db.query<ResultSetHeader>(
-            "INSERT INTO todos (task, tags, completed) VALUES (?, ?, ?)",
+            "INSERT INTO tasks (task, tags, completed) VALUES (?, ?, ?)",
             [task, tags || "", isCompleted]
         );
     
@@ -279,7 +281,7 @@ app.post("/todos/", async (req: Request, res: Response): Promise<void> => {
 });
 
 // UPDATE a todo
-app.put("/todos/:id", async (req: Request<{ id: string }>, res: Response): Promise<void> => {
+app.put("/tasks/:id", async (req: Request<{ id: string }>, res: Response): Promise<void> => {
     const todoId: number = parseInt(req.params.id);
     const { task, tags, completed }: { task?: string; tags?: string; completed?: boolean } = req.body;
 
@@ -293,7 +295,7 @@ app.put("/todos/:id", async (req: Request<{ id: string }>, res: Response): Promi
         const isCompleted: number = completed ? 1 : 0;
 
         const [result] = await db.query<ResultSetHeader>(
-            "UPDATE todos SET task=?, tags=?, completed=? WHERE id=?",
+            "UPDATE tasks SET task=?, tags=?, completed=? WHERE id=?",
             [task, tags || "", isCompleted, todoId]
         );
 
@@ -323,11 +325,11 @@ app.put("/todos/:id", async (req: Request<{ id: string }>, res: Response): Promi
 });
 
 // Delete all todos
-app.delete("/todos/delete", async (req: Request, res: Response): Promise<void> => {
+app.delete("/tasks/delete", async (req: Request, res: Response): Promise<void> => {
     try {
-        await db.query<ResultSetHeader>("TRUNCATE TABLE todos");
+        await db.query<ResultSetHeader>("TRUNCATE TABLE tasks");
 
-        res.status(200).json({ message: "All todos deleted successfully!" });
+        res.status(200).json({ message: "All tasks deleted successfully!" });
     } 
     catch (e: any) 
     {
@@ -337,12 +339,12 @@ app.delete("/todos/delete", async (req: Request, res: Response): Promise<void> =
 });
 
 // DELETE a todo
-app.delete("/todos/:id", async (req: Request<{ id: string }>, res: Response): Promise<void> => {
+app.delete("/tasks/:id", async (req: Request<{ id: string }>, res: Response): Promise<void> => {
     const todoId: number = parseInt(req.params.id);
 
     try {
         const [result] = await db.query<ResultSetHeader>(
-            "DELETE FROM todos WHERE id=?",
+            "DELETE FROM tasks WHERE id=?",
             [todoId]
         );
 
@@ -351,11 +353,11 @@ app.delete("/todos/:id", async (req: Request<{ id: string }>, res: Response): Pr
             confirm if something was actually deleted 
         */
         if (result.affectedRows === 0) {
-            res.status(404).json({ message: "Todo not found!" });
+            res.status(404).json({ message: "Task not found!" });
             return;
         }
 
-        res.status(200).json({ message: "Todo deleted successfully!" });
+        res.status(200).json({ message: "Task deleted successfully!" });
     } 
     catch (e: any) 
     {
@@ -366,5 +368,5 @@ app.delete("/todos/:id", async (req: Request<{ id: string }>, res: Response): Pr
 
 // Run this development server in port 
 app.listen(PORT, (): void => {
-    console.log(`Server running on http://localhost:${PORT}/todos`);
+    console.log(`Server running on http://localhost:${PORT}/tasks`);
 });

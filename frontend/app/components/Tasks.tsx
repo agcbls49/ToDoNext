@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Add from "./Add";
 import Edit from "./Edit";
 import { Delete } from "./Delete";
@@ -28,13 +28,10 @@ export function Tasks({ isDarkMode, toggleDarkMode }: DarkModeProps) {
     const [currentPage, setCurrentPage] = useState(1);
 
     // show all the todos
-    const fetchTodos = async(order: string) => {
+    const fetchTodos = useCallback(async(order: string) => {
         try {
-            // default endpoint to fetch all todos
-            // let endpoint = `/todos/`;
+            let endpoint = `/tasks/pages/${currentPage}`;
 
-            let endpoint = `/todos/pages/${currentPage}`;
-        
             // go to sorted endpoints
             if(order === "asc") { 
                 endpoint = "/todos/sort/asc"; 
@@ -50,7 +47,7 @@ export function Tasks({ isDarkMode, toggleDarkMode }: DarkModeProps) {
         catch(e) {
             console.error("Error fetching tasks: ", e);
         }
-    };
+    }, [currentPage]);
 
     useEffect(() => {
         // calling fetch todos alone wouldnt make this work
@@ -58,7 +55,7 @@ export function Tasks({ isDarkMode, toggleDarkMode }: DarkModeProps) {
             await fetchTodos("");
         };
         loadTodos();
-    }, []);
+    }, [currentPage, fetchTodos]);
 
     // clicking task to show complete or not and showing it on the database
     const handleToggleComplete = async(id: number, currentStatus: boolean) => {
@@ -161,7 +158,7 @@ export function Tasks({ isDarkMode, toggleDarkMode }: DarkModeProps) {
                 </button>
             </div>
             <ul className="mt-5">
-                {todos.map((todo: Todo) => (
+                {(todos || []).map((todo: Todo) => (
                     // task entry
                     <li key={todo.id} onClick={(e) => {
                         e.preventDefault();
@@ -210,6 +207,33 @@ export function Tasks({ isDarkMode, toggleDarkMode }: DarkModeProps) {
                     </li>
                 ))}
             </ul>
+            {/* Pagination */}
+            <div className="flex justify-center items-center mt-5">
+                <div className="flex gap-4">
+                    <button onClick={() => {
+                        // allow previous button clicking as long as the page is not the first page 
+                            if(currentPage > 1) {
+                                setCurrentPage(currentPage - 1);
+                                fetchTodos("");
+                            }
+                        }}
+                        // Make button disabled if its the first page
+                        disabled={currentPage === 1}
+                        className={currentPage === 1 ? "opacity-50 cursor-not-allowed" : "px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"}>
+                        Previous
+                    </button>
+                    <span className="px-4 py-2">
+                        Page {currentPage}
+                    </span>
+                    <button onClick={() => {
+                        setCurrentPage(currentPage + 1);
+                        fetchTodos("");
+                    }}
+                    className="font-bold px-4 py-2 bg-amber-400 text-white hover:bg-amber-500 rounded">
+                        Next
+                    </button>
+                </div>
+            </div>
         </div>
     );
 }

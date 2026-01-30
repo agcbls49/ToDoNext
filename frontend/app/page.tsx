@@ -19,9 +19,9 @@ export default function Home() {
         <div className={`w-[50%] mx-auto rounded-md p-5 space-y-6 shadow-lg ${isDarkMode ?  'bg-[#171717] text-white' : 'bg-gray-50 text-black'}`}>
           <Tasks isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode}/>
           {/* Back to top button */}
-          <div className="flex justify-end">
+          <div className="flex justify-center mt-10">
             <button onClick={(e) => e.currentTarget.closest('main')?.scrollTo({ top: 0, behavior: 'smooth' })}
-              className="font-bold gap-1 bg-amber-400 text-white px-4 py-2 hover:bg-amber-500 rounded-md transition-all duration-300 ease-in-out cursor-pointer flex items-center">
+              className="gap-1 text-base bg-gray-500 text-white px-4 py-2 hover:bg-gray-600 rounded-md transition-all duration-300 ease-in-out cursor-pointer flex items-center">
                 Back to Top <ArrowUp />
             </button>
           </div>
