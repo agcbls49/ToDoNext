@@ -4,8 +4,8 @@ A To Do Application that allows users to Create Tasks, Edit Tasks, Delete tasks 
 ## Features
 1. Create a task (with optional tags)
 2. Click a task to complete
-3. Sort tasks in ascending order
-4. Sort tasks in descending order
+3. Sort tasks in ascending order*
+4. Sort tasks in descending order*
 5. Show only completed tasks
 6. Hide all completed tasks
 7. Edit a task (including tags)*
@@ -49,7 +49,10 @@ A To Do Application that allows users to Create Tasks, Edit Tasks, Delete tasks 
 2. MySQL Database
 
 > [!NOTE]
-> This web application is not mobile responsive and the database setup has to be configured manually. Refreshing the page switches dark mode to light mode. Clicking outside the input boxes or holding and dragging the mouse will close the edit screen and will redirect the user to the home page.
+> This web application is not mobile responsive and the database setup has to be configured manually.
+> Refreshing the page switches dark mode to light mode. 
+> Clicking outside the input boxes or holding and dragging the mouse will close the edit screen and will redirect the user to the home page. 
+> Clicking the sort button will show all the tasks regardless of the current page.
 
 ## Requirements to Install
 1. Visual Studio Code (VSC) or any other IDE

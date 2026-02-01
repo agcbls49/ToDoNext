@@ -34,10 +34,10 @@ export function Tasks({ isDarkMode, toggleDarkMode }: DarkModeProps) {
 
             // go to sorted endpoints
             if(order === "asc") { 
-                endpoint = `/tasks/sort/asc/${currentPage}`; 
+                endpoint = "/tasks/sort/asc/"; 
             }
             if(order === "desc") {
-                endpoint = `/tasks/sort/desc/${currentPage}`; 
+                endpoint = "/tasks/sort/desc/"; 
             }
 
             const response = await fetch(endpoint);

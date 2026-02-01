@@ -148,23 +148,9 @@ app.get("/tasks/pages/:page", async(req: Request<{ page: string }>, res: Respons
 });
 
 // Sort the todo alphabetically
-app.get("/tasks/sort/asc/:page", async(req: Request<{ page: string }>, res: Response): Promise<void> => {
+app.get("/tasks/sort/asc", async(req: Request<{ page: string }>, res: Response): Promise<void> => {
     try {
-        // Get page number from the url
-        const page = parseInt(req.params.page);
-
-        // Items to show per page
-        const pageSize = 5;
-
-        /* 
-            if in page 1 then no skipping
-            if page 2 then skip 5 since 2 - 1 = 1 * 5 = 5 
-        */
-        const rowsToSkip = (page - 1) * pageSize;
-
-        const [rows] = await db.query<(RowDataPacket & Todo)[]>("SELECT * FROM tasks ORDER BY task ASC LIMIT ? OFFSET ?", [pageSize, rowsToSkip]);
-
-        // const [rows] = await db.query<(RowDataPacket & Todo)[]>("SELECT * FROM tasks ORDER BY task ASC");
+        const [rows] = await db.query<(RowDataPacket & Todo)[]>("SELECT * FROM tasks ORDER BY task ASC");
         
         const todos: TodoResponse[] = rows.map((row: RowDataPacket & Todo) => ({
             id: row.id,
@@ -184,24 +170,9 @@ app.get("/tasks/sort/asc/:page", async(req: Request<{ page: string }>, res: Resp
 });
 
 // Reset the sorting
-app.get("/tasks/sort/desc/:page", async(req: Request<{ page: string }>, res: Response): Promise<void> => {
+app.get("/tasks/sort/desc", async(req: Request<{ page: string }>, res: Response): Promise<void> => {
     try {
-        // Get page number from the url
-        const page = parseInt(req.params.page);
-
-        // Items to show per page
-        const pageSize = 5;
-
-        /* 
-            if in page 1 then no skipping
-            if page 2 then skip 5 since 2 - 1 = 1 * 5 = 5 
-        */
-        const rowsToSkip = (page - 1) * pageSize;
-
-        const [rows] = await db.query<(RowDataPacket & Todo)[]>("SELECT * FROM tasks ORDER BY task DESC LIMIT ? OFFSET ?", [pageSize, rowsToSkip]);
-
-
-        // const [rows] = await db.query<(RowDataPacket & Todo)[]>("SELECT * FROM tasks ORDER BY task DESC");
+        const [rows] = await db.query<(RowDataPacket & Todo)[]>("SELECT * FROM tasks ORDER BY task DESC");
         
         const todos: TodoResponse[] = rows.map((row: RowDataPacket & Todo) => ({
             id: row.id,
