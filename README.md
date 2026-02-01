@@ -49,7 +49,7 @@ A To Do Application that allows users to Create Tasks, Edit Tasks, Delete tasks 
 2. MySQL Database
 
 > [!NOTE]
-> This web application is not mobile responsive and the database setup has to be configured manually. Refreshing the page switches dark mode to light mode. Clicking outside the input boxes or holding and dragging the mouse will close the edit screen and will redirect the user to the home page. Clicking the sort buttons will make show all the tasks all in one page.
+> This web application is not mobile responsive and the database setup has to be configured manually. Refreshing the page switches dark mode to light mode. Clicking outside the input boxes or holding and dragging the mouse will close the edit screen and will redirect the user to the home page.
 
 ## Requirements to Install
 1. Visual Studio Code (VSC) or any other IDE

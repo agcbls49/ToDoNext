@@ -34,10 +34,10 @@ export function Tasks({ isDarkMode, toggleDarkMode }: DarkModeProps) {
 
             // go to sorted endpoints
             if(order === "asc") { 
-                endpoint = "/tasks/sort/asc"; 
+                endpoint = `/tasks/sort/asc/${currentPage}`; 
             }
             if(order === "desc") {
-                endpoint = "/tasks/sort/desc"; 
+                endpoint = `/tasks/sort/desc/${currentPage}`; 
             }
 
             const response = await fetch(endpoint);
@@ -158,7 +158,7 @@ export function Tasks({ isDarkMode, toggleDarkMode }: DarkModeProps) {
                 </button>
             </div>
             <ul className="mt-5">
-                {(todos || []).map((todo: Todo) => (
+                {Array.isArray(todos) && todos.map((todo: Todo) => (
                     // task entry
                     <li key={todo.id} onClick={(e) => {
                         e.preventDefault();
