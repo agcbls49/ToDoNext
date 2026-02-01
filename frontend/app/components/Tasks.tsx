@@ -58,6 +58,13 @@ export function Tasks({ isDarkMode, toggleDarkMode }: DarkModeProps) {
         loadTodos();
     }, [currentPage, fetchTodos]);
 
+    // show the task being searched
+    const handleSearchResults = (searchResults: Todo[]) => {
+        setTodos(searchResults);
+        // reset to page 1 when searching
+        setCurrentPage(1);
+    };
+
     // clicking task to show complete or not and showing it on the database
     const handleToggleComplete = async(id: number, currentStatus: boolean) => {
         try {
@@ -130,7 +137,7 @@ export function Tasks({ isDarkMode, toggleDarkMode }: DarkModeProps) {
             {/* Add task button */}
             <Add isDarkMode={isDarkMode} onTaskAdded={() => fetchTodos("")}/>
             {/* Sorting buttons */}
-            <Search isDarkMode={isDarkMode}/>
+            <Search isDarkMode={isDarkMode} onTaskSearch={handleSearchResults}/>
             <div className="mt-5 flex flex-nowrap items-center w-full gap-2.5">
                 <button onClick={() => fetchTodos("asc")}
                     className="flex flex-1 items-center justify-center whitespace-nowrap text-md bg-gray-500 text-white px-3 py-2 hover:bg-gray-600 rounded-md transition-all cursor-pointer">

@@ -114,6 +114,34 @@ app.get("/tasks/:id", async (req: Request<{ id: string }>, res: Response): Promi
     }
 });
 
+// Search for todo or tags
+app.get("/tasks/search/:query", async(req: Request, res: Response): Promise<void> => {
+    try {
+        const query = req.params.query;
+
+        if(!query) {
+            res.status(400).json({ error: "Search query required"});
+            return;
+        }
+
+        // query for searching task or tags
+        const [rows] = await db.query<(RowDataPacket & Todo)[]>("SELECT * FROM tasks WHERE task LIKE ? OR tags LIKE ?", [`%${query}%`, `%${query}%`]);
+
+        const todos: TodoResponse[] = rows.map((row: RowDataPacket & Todo) => ({
+            id: row.id,
+            task: row.task,
+            tags: row.tags,
+            completed: Boolean(row.completed)
+        }));
+
+        res.json(todos);
+    }
+    catch (e: any) {
+        console.error(e);
+        res.status(500).json({ error: "Database Error" });
+    }
+});
+
 // Pagination
 app.get("/tasks/pages/:page", async(req: Request<{ page: string }>, res: Response): Promise<void> => {
     try {

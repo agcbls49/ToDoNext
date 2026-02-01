@@ -3,17 +3,18 @@ A To Do Application that allows users to Create Tasks, Edit Tasks, Delete tasks 
 
 ## Features
 1. Create a task (with optional tags)
-2. Click a task to complete
+2. Click a task to complete it
 3. Sort tasks in ascending order*
 4. Sort tasks in descending order*
 5. Show only completed tasks
 6. Hide all completed tasks
 7. Edit a task (including tags)*
 8. Set theme to Dark Mode / Light Mode*
-9. Delete a task
-10. Delete all tasks
-11. Pagination
-12. Back to top button
+9. Search for a task or tag/s
+10. Delete a task
+11. Delete all tasks
+12. Pagination
+13. Back to top button
 
 ## Screenshots
 <img width="983" height="836" alt="Image" src="https://github.com/user-attachments/assets/c429176a-f0a1-47c7-81f6-47b83caf06f0" />
