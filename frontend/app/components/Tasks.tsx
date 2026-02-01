@@ -14,6 +14,7 @@ import { SunMoon } from 'lucide-react';
 import { Eye } from 'lucide-react';
 import { EyeOff } from 'lucide-react';
 import { Trash2 } from 'lucide-react';
+import Search from "./Search";
 
 // for the dark mode
 interface DarkModeProps {
@@ -129,6 +130,7 @@ export function Tasks({ isDarkMode, toggleDarkMode }: DarkModeProps) {
             {/* Add task button */}
             <Add isDarkMode={isDarkMode} onTaskAdded={() => fetchTodos("")}/>
             {/* Sorting buttons */}
+            <Search isDarkMode={isDarkMode}/>
             <div className="mt-5 flex flex-nowrap items-center w-full gap-2.5">
                 <button onClick={() => fetchTodos("asc")}
                     className="flex flex-1 items-center justify-center whitespace-nowrap text-md bg-gray-500 text-white px-3 py-2 hover:bg-gray-600 rounded-md transition-all cursor-pointer">
