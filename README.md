@@ -17,26 +17,36 @@ A To Do Application that allows users to Create Tasks, Edit Tasks, Delete tasks 
 13. Back to top button
 
 ## Screenshots
-<img width="983" height="836" alt="Image" src="https://github.com/user-attachments/assets/c429176a-f0a1-47c7-81f6-47b83caf06f0" />
-<img width="983" height="218" alt="Image" src="https://github.com/user-attachments/assets/3b064f3d-6060-48de-82de-051c14222c10" />
+<img width="969" height="878" alt="Home" src="https://github.com/user-attachments/assets/bce7d733-886f-49d7-b838-ae1f277389d3" />
+
+### Create a Task
+<img width="979" height="561" alt="Create a Task" src="https://github.com/user-attachments/assets/2dde8d74-3a2c-42eb-9e48-33f35dcd90d9" />
 
 ### Sort in Ascending Order
-<img width="986" height="508" alt="Image" src="https://github.com/user-attachments/assets/3feb5411-fadb-48a9-8d9b-b0daec8a666b" />
+<img width="969" height="815" alt="Sort Ascending Order" src="https://github.com/user-attachments/assets/7e8dc58f-61f9-41ff-9ff9-4fd46ec85dee" />
 
 ### Sort in Descending Order
-<img width="981" height="510" alt="Image" src="https://github.com/user-attachments/assets/3d515e57-f685-47c2-91b4-65ed9d8a3e85" />
+<img width="973" height="812" alt="Sort Descending Order" src="https://github.com/user-attachments/assets/0b9406ae-795c-4f7a-8779-fcf2adecd01f" />
 
-### Show Completed Task/s
-<img width="988" height="791" alt="Image" src="https://github.com/user-attachments/assets/ec6d142b-d1e7-4adf-9f52-542e31827aac" />
+### Show Completed Tasks
+<img width="976" height="834" alt="Show Completed Tasks" src="https://github.com/user-attachments/assets/c98d3afc-aea8-40b2-9af0-b551d26f3da0" />
 
-### Hide Completed Task/s
-<img width="985" height="762" alt="Image" src="https://github.com/user-attachments/assets/c5a08edb-24a1-4067-a30d-cca26101ecd2" />
+### Hide Completed Tasks
+<img width="968" height="828" alt="Hide Completed Tasks" src="https://github.com/user-attachments/assets/72c7100a-c95e-45c4-9b0e-a9703d74474e" />
+
+### Search for Task
+<img width="973" height="557" alt="Search for Task" src="https://github.com/user-attachments/assets/fdc0772c-2a36-4ace-bc8b-385b945b8015" />
+
+### Search for Tag/s
+<img width="974" height="628" alt="Search for Tasks with a Tag" src="https://github.com/user-attachments/assets/4d61c486-7545-4af6-a34c-474bfd10b069" />
+
+<img width="972" height="555" alt="Search for Tasks with Tags" src="https://github.com/user-attachments/assets/c9476a6e-fd21-4f8a-a925-77050f902e7a" />
 
 ### Edit Task
-<img width="1274" height="508" alt="Image" src="https://github.com/user-attachments/assets/cfd2cdf6-f06e-436c-9b91-fb3d9c6db3f2" />
+<img width="1274" height="508" alt="Edit a Task" src="https://github.com/user-attachments/assets/cfd2cdf6-f06e-436c-9b91-fb3d9c6db3f2" />
 
 ### Click Task to Complete
-<img width="990" height="636" alt="Image" src="https://github.com/user-attachments/assets/68d3582c-2af3-4dd0-8206-022452aa135c" />
+<img width="970" height="666" alt="Click the task to complete it" src="https://github.com/user-attachments/assets/a9f5053e-6a40-4c19-bdba-8c2ce31a642e" />
 
 ## Tech Stack
 
