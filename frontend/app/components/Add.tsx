@@ -36,7 +36,7 @@ export default function Add({ isDarkMode, onTaskAdded } : DarkModeProps) {
             // convert tags array to comma separated string for the backend
             const tagsString = tagsArray.join(', ');
 
-            const response = await fetch("/todos", {
+            const response = await fetch("/tasks", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ task:taskInput, tags:tagsString, completed: false })
