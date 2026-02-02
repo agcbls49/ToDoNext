@@ -20,7 +20,7 @@ export function Delete({ todoId, onDeleteSuccess }: DeleteProps) {
 
         try {
             // use the delete from the express backend
-            const response = await fetch(`/todos/${todoId}`, {
+            const response = await fetch(`/tasks/${todoId}`, {
                 method: "DELETE",
             });
 

@@ -18,7 +18,7 @@ export default function Edit({ todo, onEditComplete, isDarkMode }: EditProps) {
 
     const handleEdit = async() => {
         try {
-            const response = await fetch(`/todos/${todo.id}`, {
+            const response = await fetch(`/tasks/${todo.id}`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ 
