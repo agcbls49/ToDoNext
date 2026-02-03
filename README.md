@@ -106,4 +106,4 @@ PORT=4000
 
 Open two terminals in VSC. In one terminal, `cd backend` and the other `cd frontend`. In both terminals run `npm install` after which run `npm run dev`. 
 
-Open your browser and navigate to `localhost:4000/todos` for the backend and `localhost:3000` for the frontend.
+Open your browser and navigate to `localhost:4000/tasks` for the backend and `localhost:3000` for the frontend.
