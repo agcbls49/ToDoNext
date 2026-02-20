@@ -57,10 +57,11 @@ A To Do Application that allows users to Create Tasks, Edit Tasks, Delete tasks 
 
 **Backend:**
 1. Express.js
-2. MySQL Database
+2. Drizzle ORM
+3. MySQL Database
 
 > [!NOTE]
-> 1. This web application is not mobile responsive and the database setup has to be configured manually. 
+> 1. This web application is not mobile responsive and the database setup has to be configured manually (see and follow the steps below). 
 > 2. Refreshing the page switches dark mode to light mode. 
 > 3. Clicking outside the input boxes or holding and dragging the mouse will close the edit screen and will redirect the user to the home page. 
 > 4. Clicking the sort button will show all the tasks regardless of the current page.
@@ -70,36 +71,17 @@ A To Do Application that allows users to Create Tasks, Edit Tasks, Delete tasks 
 1. Visual Studio Code (VSC) or any other IDE
 2. Node.js*
 3. MySQL Database
-4. MySQL Workbench
 
 > [!NOTE] 
 > Newer versions of Node.js version are not tested. This project uses version 22.18.0 Long-Term Support (LTS).
 
 ## Running the Project
 > [!NOTE] 
-> The database dump file called `backup.sql` can be used for creating the database in MySQL Workbench. 
+> To use the intial/dummy data, open the terminal and type `cd backend/` and run `npm run db:seed`;
 
 Make sure to run MySQL by pressing the `Windows + R` key and typing `services.msc`. Scroll down until you see `MySQL80` or whatever MySQL version you have. Right click and click `Start` to start the service.
 
-Open MySQL Workbench and create a database in MySQL named ToDoNext and use the dump file in MySQL Workbench.
-
-**Steps:**
-1. Open Workbench
-2. Go to Server then Data Import
-3. Select Import from Self-Contained File
-4. Browse to the backup.sql location
-5. Select target database
-6. Click Start Import
-
-Clone the GitHub repository and open inside Visual Studio Code (VSC). Inside the backend folder, connect your MySQL database by making a .env file and filling in the blanks.
-
-```
-DB_HOST=localhost
-DB_USER=
-DB_PASSWORD=
-DB_NAME=todonext_db
-PORT=4000
-```
+Clone the GitHub repository and open inside Visual Studio Code (VSC). Inside the backend folder, connect your MySQL database by making a .env file and filling in the missing information copied from the `.env.example` file.
 
 > [!NOTE] 
 > The default port number for the backend is 4000 but may be modified in the `backend/todos.ts` file. The frontend will then have to be updated by going to `frontend/package.json` and `frontend/next.config.ts`.
