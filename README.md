@@ -66,6 +66,7 @@ A To Do Application that allows users to Create Tasks, Edit Tasks, Delete tasks 
 > 3. Clicking outside the input boxes or holding and dragging the mouse will close the edit screen and will redirect the user to the home page. 
 > 4. Clicking the sort button will show all the tasks regardless of the current page.
 > 5. Clicking the sort buttons then clicking the next or previous button will show the paginated version of the tasks again.
+> 6. Users can click the Next button even when there is no data on the next page. This means that the next button can go to high numbered pages because there is no pagination limit.
 
 ## Requirements to Install
 1. Visual Studio Code (VSC) or any other IDE
@@ -77,7 +78,7 @@ A To Do Application that allows users to Create Tasks, Edit Tasks, Delete tasks 
 
 ## Running the Project
 > [!NOTE] 
-> To use the intial/dummy data, open the terminal and type `cd backend/` and run `npm run db:seed`;
+> To use the intial/dummy data, open the terminal and type `cd backend/` and run `npm run db:seed`.
 
 Make sure to run MySQL by pressing the `Windows + R` key and typing `services.msc`. Scroll down until you see `MySQL80` or whatever MySQL version you have. Right click and click `Start` to start the service.
 
