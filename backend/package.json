@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node todos.ts",
-    "dev": "nodemon --exec npx tsx todos.ts"
+    "dev": "nodemon --exec npx tsx todos.ts",
+    "db:seed": "tsx drizzle/seed.ts"
   },
   "keywords": [],
   "author": "",
@@ -14,15 +15,17 @@
   "type": "commonjs",
   "dependencies": {
     "cors": "^2.8.6",
-    "dotenv": "^17.2.3",
+    "dotenv": "^17.3.1",
+    "drizzle-orm": "^0.45.1",
     "express": "^5.2.1",
-    "mysql2": "^3.16.1"
+    "mysql2": "^3.17.4"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
-    "@types/node": "^25.0.10",
-    "nodemon": "^3.1.11",
+    "@types/node": "^25.3.0",
+    "drizzle-kit": "^0.31.9",
+    "nodemon": "^3.1.13",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"
   }

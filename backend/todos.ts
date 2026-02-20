@@ -1,12 +1,19 @@
 // Database Setup
 import dotenv from 'dotenv';
-import mysql, { Pool, ResultSetHeader, RowDataPacket } from 'mysql2/promise';
-import { Todo, TodoResponse, DatabaseConfig } from './types/db_types'
-import express, { Application, Request, Response } from 'express';
-import cors from 'cors';
 
 // Load environment variables for database
-dotenv.config();
+dotenv.config({path: "./.env"});
+
+// Drizzle Setup 
+import { eq, sql, asc, desc } from 'drizzle-orm';
+import { db } from "./db";
+import { TodoResponse } from './types/db_types'
+
+// Import the schema
+import { tasks } from "./drizzle/schema";
+
+import express, { Application, Request, Response } from 'express';
+import cors from 'cors';
 
 /* 
     10 is a radix or base, parses the string value into an integer
@@ -15,31 +22,6 @@ dotenv.config();
     while environment variables are always strings 
 */
 const PORT: number = parseInt(process.env.PORT || '4000', 10);
-
-const dbConfig: DatabaseConfig = {
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
-    waitForConnections: true,
-    /* 
-        maximum number of connections the server will open at once
-        an 11th person to connect will have to wait 
-        (hence waitforconenctions: true) since 10 is the limit 
-    */
-    connectionLimit: 10,
-    /* 
-        how many people can wait in line = 0 meaning no limit to the 
-        length of the line and everyone waits until a connection opens 
-    */
-    queueLimit: 0
-};
-
-/* 
-    Pool keeps database connections open so it can be reused by others
-    https://stackoverflow.com/a/4041163
-*/
-const db: Pool = mysql.createPool(dbConfig);
 
 // Server Setup
 const app: Application = express();
@@ -55,19 +37,13 @@ app.use(express.json());
 // GET ALL todos (go to localhost:4000/)
 app.get("/tasks", async (req: Request, res: Response): Promise<void> => {
     try {
-        /* 
-            variable rows is used for SELECT
-            RowDataPacket represents a single row of 
-            data returned from a database query 
-        */
-        const [rows] = await db.query<(RowDataPacket & Todo)[]>("SELECT * FROM tasks");
-        
-        // Convert the raw database rows into the TodoResponse format for the frontend
-        const todos: TodoResponse[] = rows.map((row: RowDataPacket & Todo) => ({
+        const rows = await db.select().from(tasks);
+
+        // Convert to TodoResponse[] format
+        const todos: TodoResponse[] = rows.map((row) => ({
             id: row.id,
             task: row.task,
-            tags: row.tags,
-            // convert MySQL integers(0 & 1) into booleans(true & false) for the frontend
+            tags: row.tags || "",
             completed: Boolean(row.completed)
         }));
 
@@ -86,26 +62,21 @@ app.get("/tasks/:id", async (req: Request<{ id: string }>, res: Response): Promi
     const todoId: number = parseInt(req.params.id);
 
     try {
-        // ? is a placeholder to prevent SQL Injection
-        const [rows] = await db.query<(RowDataPacket & Todo)[]>(
-            "SELECT * FROM tasks WHERE id = ?",[todoId]);
+        const [todo] = await db.select().from(tasks).where(eq(tasks.id, todoId));
     
-        // if array is empty then the ID does not exist in the table
-        if (rows.length === 0) {
+        if (!todo) {
             res.status(404).json({ message: "Task not found" });
             return;
         }
     
-        // convert the result into the TodoResponse format for the frontend
-        const todo: TodoResponse = {
-            // [0] just gets the first item
-            id: rows[0].id,
-            task: rows[0].task,
-            tags: rows[0].tags,
-            completed: Boolean(rows[0].completed)
+        const todoResponse: TodoResponse = {
+            id: todo.id,
+            task: todo.task,
+            tags: todo.tags || "",
+            completed: Boolean(todo.completed)
         };
 
-        res.json(todo);
+        res.json(todoResponse);
     } 
     catch (e: any) 
     {
@@ -125,12 +96,12 @@ app.get("/tasks/search/:query", async(req: Request, res: Response): Promise<void
         }
 
         // query for searching task or tags
-        const [rows] = await db.query<(RowDataPacket & Todo)[]>("SELECT * FROM tasks WHERE task LIKE ? OR tags LIKE ?", [`%${query}%`, `%${query}%`]);
-
-        const todos: TodoResponse[] = rows.map((row: RowDataPacket & Todo) => ({
+        const rows = await db.select().from(tasks).where(sql`${tasks.task} LIKE ${`%${query}%`} OR ${tasks.tags} LIKE ${`%${query}%`}`);
+        
+        const todos: TodoResponse[] = rows.map((row) => ({
             id: row.id,
             task: row.task,
-            tags: row.tags,
+            tags: row.tags || "",
             completed: Boolean(row.completed)
         }));
 
@@ -157,12 +128,12 @@ app.get("/tasks/pages/:page", async(req: Request<{ page: string }>, res: Respons
         */
         const rowsToSkip = (page - 1) * pageSize;
 
-        const [rows] = await db.query<(RowDataPacket & Todo)[]>("SELECT * FROM tasks ORDER BY id LIMIT ? OFFSET ?", [pageSize, rowsToSkip]);
+        const rows = await db.select().from(tasks).orderBy(tasks.id).limit(pageSize).offset(rowsToSkip);
 
-        const todos: TodoResponse[] = rows.map((row:RowDataPacket & Todo) => ({
+        const todos: TodoResponse[] = rows.map((row) => ({
             id: row.id,
             task: row.task,
-            tags: row.tags,
+            tags: row.tags || "",
             completed: Boolean(row.completed)
         }));
 
@@ -178,12 +149,12 @@ app.get("/tasks/pages/:page", async(req: Request<{ page: string }>, res: Respons
 // Sort the todo alphabetically
 app.get("/tasks/sort/asc", async(req: Request<{ page: string }>, res: Response): Promise<void> => {
     try {
-        const [rows] = await db.query<(RowDataPacket & Todo)[]>("SELECT * FROM tasks ORDER BY task ASC");
+        const rows = await db.select().from(tasks).orderBy(asc(tasks.task));
         
-        const todos: TodoResponse[] = rows.map((row: RowDataPacket & Todo) => ({
+        const todos: TodoResponse[] = rows.map((row) => ({
             id: row.id,
             task: row.task,
-            tags: row.tags,
+            tags: row.tags || "",
             completed: Boolean(row.completed)
         }));
 
@@ -200,12 +171,12 @@ app.get("/tasks/sort/asc", async(req: Request<{ page: string }>, res: Response):
 // Reset the sorting
 app.get("/tasks/sort/desc", async(req: Request<{ page: string }>, res: Response): Promise<void> => {
     try {
-        const [rows] = await db.query<(RowDataPacket & Todo)[]>("SELECT * FROM tasks ORDER BY task DESC");
-        
-        const todos: TodoResponse[] = rows.map((row: RowDataPacket & Todo) => ({
+        const rows = await db.select().from(tasks).orderBy(desc(tasks.task));   
+
+        const todos: TodoResponse[] = rows.map((row) => ({
             id: row.id,
             task: row.task,
-            tags: row.tags,
+            tags: row.tags || "",
             completed: Boolean(row.completed)
         }));
 
@@ -221,13 +192,13 @@ app.get("/tasks/sort/desc", async(req: Request<{ page: string }>, res: Response)
 
 // Filter completed only 
 app.get("/tasks/filter/completed", async (req: Request, res: Response): Promise<void> => {
-    try {
-        const [rows] = await db.query<(RowDataPacket & Todo)[]>("SELECT * FROM tasks WHERE completed = 1");
-        
-        const todos: TodoResponse[] = rows.map((row: RowDataPacket & Todo) => ({
+    try {        
+        const rows = await db.select().from(tasks).where(eq(tasks.completed, 1));
+
+        const todos: TodoResponse[] = rows.map((row) => ({
             id: row.id,
             task: row.task,
-            tags: row.tags,
+            tags: row.tags || "",
             completed: Boolean(row.completed)
         }));
 
@@ -244,12 +215,12 @@ app.get("/tasks/filter/completed", async (req: Request, res: Response): Promise<
 // Hide completed 
 app.get("/tasks/filter/incomplete", async (req: Request, res: Response): Promise<void> => {
     try {
-        const [rows] = await db.query<(RowDataPacket & Todo)[]>("SELECT * FROM tasks WHERE completed = 0");
-        
-        const todos: TodoResponse[] = rows.map((row: RowDataPacket & Todo) => ({
+        const rows = await db.select().from(tasks).where(eq(tasks.completed, 0));
+
+        const todos: TodoResponse[] = rows.map((row) => ({
             id: row.id,
             task: row.task,
-            tags: row.tags,
+            tags: row.tags || "",
             completed: Boolean(row.completed)
         }));
 
@@ -278,15 +249,11 @@ app.post("/tasks/", async (req: Request, res: Response): Promise<void> => {
         // 0 for false and 1 for true
         const isCompleted: number = completed ? 1 : 0;
 
-        /* 
-            variable result is used for INSERT, UPDATE and DELETE
-            ResultSetHeader defines the structure of metadata returned 
-            from non-SELECT queries including affectedRows & insertId 
-        */
-        const [result] = await db.query<ResultSetHeader>(
-            "INSERT INTO tasks (task, tags, completed) VALUES (?, ?, ?)",
-            [task, tags || "", isCompleted]
-        );
+        const [result] = await db.insert(tasks).values({
+            task: task,
+            tags: tags || "",
+            completed: isCompleted
+        });
     
         // return the ID of the newly created item
         res.status(201).json({ 
@@ -322,17 +289,19 @@ app.put("/tasks/:id", async (req: Request<{ id: string }>, res: Response): Promi
     try {
         const isCompleted: number = completed ? 1 : 0;
 
-        const [result] = await db.query<ResultSetHeader>(
-            "UPDATE tasks SET task=?, tags=?, completed=? WHERE id=?",
-            [task, tags || "", isCompleted, todoId]
-        );
+        const result = await db.update(tasks).set({
+            task: task,
+            tags: tags || "",
+            completed: isCompleted
+        }).where(eq(tasks.id, todoId));
 
         /*
             affectedRows checks if any row was changed
-            check if the id to update actually exists
             if 0 then the UPDATE query didn't find a matching ID 
         */
-        if (result.affectedRows === 0) {
+        const affectedRows = (result as any).affectedRows;
+
+        if (affectedRows === 0) {
             res.status(404).json({ message: "Task not found!" });
             return;
         }
@@ -355,7 +324,7 @@ app.put("/tasks/:id", async (req: Request<{ id: string }>, res: Response): Promi
 // Delete all todos
 app.delete("/tasks/delete", async (req: Request, res: Response): Promise<void> => {
     try {
-        await db.query<ResultSetHeader>("TRUNCATE TABLE tasks");
+        await db.delete(tasks);
 
         res.status(200).json({ message: "All tasks deleted successfully!" });
     } 
@@ -371,16 +340,15 @@ app.delete("/tasks/:id", async (req: Request<{ id: string }>, res: Response): Pr
     const todoId: number = parseInt(req.params.id);
 
     try {
-        const [result] = await db.query<ResultSetHeader>(
-            "DELETE FROM tasks WHERE id=?",
-            [todoId]
-        );
+        const result = await db.delete(tasks).where(eq(tasks.id, todoId));
 
         /* 
             prevent user from deleting a non-existent id task
             confirm if something was actually deleted 
         */
-        if (result.affectedRows === 0) {
+        const affectedRows = (result as any).affectedRows;
+
+        if (affectedRows === 0) {
             res.status(404).json({ message: "Task not found!" });
             return;
         }
