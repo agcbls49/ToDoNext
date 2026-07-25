@@ -71,10 +71,11 @@ A To Do Application that allows users to Create Tasks, Edit Tasks, Delete tasks 
 ## Requirements to Install
 1. Visual Studio Code (VSC) or any other IDE
 2. Node.js*
-3. MySQL Database
+3. MySQL Database*
 
 > [!NOTE] 
-> Newer versions of Node.js version are not tested. This project uses version 22.18.0 Long-Term Support (LTS).
+> Newer versions of Node.js are not tested. This project uses version 22.18.0 Long-Term Support (LTS).<br><br>
+> Newer versions of MySQL are not tested. This project uses version 8.0.41.
 
 ## Running the Project
 > [!NOTE] 
