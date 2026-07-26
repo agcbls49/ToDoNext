@@ -37,7 +37,7 @@ export default function Search({ isDarkMode, onTaskSearch } : DarkModeProps) {
             }
         }
         catch(e) {
-            console.error("Error adding todo: ", e);
+            console.error("Error searching todo: ", e);
         }
     }
 
