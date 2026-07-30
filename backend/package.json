@@ -5,7 +5,7 @@
   "main": "todos.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node todos.ts",
+    "start": "npx tsx todos.ts",
     "dev": "nodemon --exec npx tsx todos.ts",
     "db:seed": "tsx drizzle/seed.ts"
   },

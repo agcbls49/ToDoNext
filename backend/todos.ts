@@ -363,6 +363,7 @@ app.delete("/tasks/:id", async (req: Request<{ id: string }>, res: Response): Pr
 });
 
 // Run this development server in port 
-app.listen(PORT, (): void => {
+// changed to 0.0.0.0 for docker
+app.listen(PORT, "0.0.0.0", (): void => {
     console.log(`Server running on http://localhost:${PORT}/tasks`);
 });

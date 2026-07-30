@@ -1,11 +1,17 @@
 # Backend
-backend/node_modules
+backend/node_modules/
 backend/.env
 
 # Frontend
-frontend/node_modules
-frontend/.next
-frontend/out
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+
+# Dependencies
+node_modules/
+
+# Next.js
+.next/
 
 # Logs
 *.log

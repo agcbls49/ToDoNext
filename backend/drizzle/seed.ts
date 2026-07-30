@@ -3,11 +3,9 @@ import { tasks } from "./schema";
 
 async function seed() {
     console.log("Seeding database...");
-    
-    // Clear existing data
+
     await db.delete(tasks);
-    
-    // Insert dump sql data or initial data
+
     await db.insert(tasks).values([
         { id: 1, task: 'Code Frontend', tags: 'Tech', completed: 0 },
         { id: 2, task: 'Feed Cat', tags: 'Pet', completed: 0 },
@@ -20,8 +18,14 @@ async function seed() {
         { id: 9, task: 'Study for quiz', tags: 'School', completed: 0 },
         { id: 10, task: 'Do Yoga', tags: 'Health', completed: 0 },
     ]);
-    
+
     console.log("Seed completed!");
 }
 
-seed().catch(console.error);
+// added for docker to work
+seed()
+    .then(() => process.exit(0))
+    .catch((error) => {
+        console.error(error);
+        process.exit(1);
+    });
