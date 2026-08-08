@@ -60,6 +60,10 @@ A To Do Application that allows users to Create Tasks, Edit Tasks, Delete tasks 
 2. Drizzle ORM
 3. MySQL Database
 
+**Tool:**
+<br>
+Docker
+
 > [!NOTE]
 > 1. This web application is not mobile responsive and the database setup has to be configured manually (see and follow the steps below). 
 > 2. Refreshing the page switches dark mode to light mode. 
